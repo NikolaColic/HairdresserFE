@@ -6,7 +6,7 @@ import {View, Text} from 'react-native'
 import { Chip } from 'react-native-elements';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TextInput, Button, Snackbar } from 'react-native-paper';
+import { Button} from 'react-native-paper';
 import { Input } from 'react-native-elements/dist/input/Input';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 

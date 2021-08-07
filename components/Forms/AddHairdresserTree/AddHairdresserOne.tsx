@@ -4,7 +4,6 @@ import { Text, View, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { Input } from "react-native-elements/dist/input/Input";
-import HeaderComponent from "../../Header/HeaderComponent";
 
 const AddHairdresserOne = () => {
    

@@ -29,7 +29,7 @@ const AddHairdresser = () => {
           wrapperStyle={styles.wrappper}
           stepStyle={styles.stepStyle}
           showButton={value}
-          buttonStyle={styles.button}
+          buttonStyle={step !== 2 ? styles.button : styles.button2}
           buttonTextStyle={{ alignSelf: 'center' }}
         />
       </SafeAreaView>
@@ -55,7 +55,19 @@ const styles = StyleSheet.create({
       marginLeft: 'auto',
       marginRight: 'auto',
       width: 80,
+      marginTop: "1.5%"
     },
+    button2: {
+      borderRadius: 4,
+      alignSelf: 'center',
+      backgroundColor: "#61892F",
+      flexDirection: 'column',
+      justifyContent: 'center',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      width: 80,
+      marginTop: "25%"
+    }
   });
 
 export default AddHairdresser;
