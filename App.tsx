@@ -27,7 +27,7 @@ const  App = () => {
    
   } else {
     return (
-      <NavigationContainer>
+      <NavigationContainer> 
          {
            number == 1 ? (
              <Drawer.Navigator initialRouteName="HomeFeed" 
@@ -38,7 +38,7 @@ const  App = () => {
              drawerStyle = {{backgroundColor:"#222629",borderRadius:1,marginVertical: 0,borderRightWidth:0.5,borderRightColor:'#86C232'}} >
                 <Drawer.Screen name="Home" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="home" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={AddReservation}  />  
+                component={HomeFeed}  />  
                 <Drawer.Screen name="Sign In" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="login-variant" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
                 component={AddHairdresser}  />
