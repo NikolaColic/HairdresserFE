@@ -64,7 +64,7 @@ const HomeFeedSearch = () =>{
     return (
         <React.Fragment>
             <View style ={{flex: 0.1,flexDirection:"column", marginTop:"2.5%",marginBottom:"2%", width:"95%", marginLeft:"3%"}}>
-            <Searchbar
+            <Searchbar 
             value = {text}
             inputStyle = {{color:"white"}}
             onChangeText = {(text)=> setText(text)}

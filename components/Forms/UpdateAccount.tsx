@@ -7,6 +7,7 @@ import HeaderComponent from "../Header/HeaderComponent";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { useNavigation} from '@react-navigation/native';
 import { Input } from "react-native-elements/dist/input/Input";
+import { Chip } from "react-native-elements/dist/buttons/Chip";
 
 
 const UpdateAccount = () => {
@@ -25,7 +26,7 @@ const UpdateAccount = () => {
         style={{ flex: 1, backgroundColor: "#222629", flexDirection: "column" }}
       >
        
-        <View style = {{width: "85%", alignContent:"center", justifyContent:"flex-start",marginLeft:"8%", marginTop:"1%"}}>
+        <View style = {{width: "85%",alignContent:"center", justifyContent:"flex-start",marginLeft:"8%", marginTop:"1%"}}>
         <Input
         placeholder='Enter name..' 
         placeholderTextColor = "#474B4F"
@@ -111,24 +112,21 @@ const UpdateAccount = () => {
             color='#61892F'
             />}
         /> 
-              <Button
-                  mode = "outlined"
-                  style = {{backgroundColor: "#86C232", justifyContent:"center", height:45,marginBottom:"5%"}}
-              >
-                  <Text style = {{color:"#222629",fontSize: 20}}>
-                      Sign up
-                  </Text>
-              </Button>
-              <Button
-                  mode = "outlined"
-                  style = {{backgroundColor: "#86C232", justifyContent:"center", height:45}}
-                  onPress = {()=> navigation.navigate('Change password')}
-              >
-                  <Text style = {{color:"#222629",fontSize: 20}}>
-                      Change password
-                  </Text>
-              </Button>
+              <Chip
+                title="UPDATE ACCOUNT"
+                containerStyle = {{width:"95%", marginLeft:"4%"}}
+                buttonStyle = {{backgroundColor:"#61892F"}}
+                titleStyle = {{fontSize:17, letterSpacing:3}}
+            />
+            <Chip
+                title="CHANGE PASSWORD"
+                containerStyle = {{width:"95%", marginLeft:"4%",marginTop:"5%"}}
+                buttonStyle = {{alignContent:"center",backgroundColor:"#61892F"}}
+                titleStyle = {{fontSize:17, letterSpacing:3}}
+                onPress = {()=> navigation.navigate('Change password')}
 
+            />
+             
           </View>
           
       </SafeAreaView>

@@ -17,6 +17,7 @@ import AddHairdresser from './components/Forms/AddHairdresser';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import AddReservation from './components/Forms/AddReservation';
 import ChangePassword from './components/Forms/UpdateAccountTree/ChangePassword';
+import HairdresserOne from './components/StoryPage/HairdresserOne';
 const Drawer = createDrawerNavigator();
 
 const  App = () => {
@@ -41,10 +42,10 @@ const  App = () => {
                 component={HomeFeed}  />  
                 <Drawer.Screen name="Sign In" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="login-variant" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={AddHairdresser}  />
+                component={HairdresserOne}  />
                 <Drawer.Screen name="Sign Up" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="account-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={SignUp} />
+                component={AddReservation} />
                 <Drawer.Screen name="Change password" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
                 component={ChangePassword} />

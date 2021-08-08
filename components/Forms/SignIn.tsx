@@ -6,6 +6,7 @@ import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { useNavigation,DrawerActions } from '@react-navigation/native';
 import HeaderComponent from '../Header/HeaderComponent';
 import { Input } from 'react-native-elements/dist/input/Input';
+import { Chip } from 'react-native-elements/dist/buttons/Chip';
 
 
 const SignIn = () =>{
@@ -77,21 +78,17 @@ const SignIn = () =>{
             color='#61892F'
             />}
         /> 
-                    <Button
-                        mode = "outlined"
-                        style = {{backgroundColor: "#86C232",height:"15%", justifyContent:"center"}}
-                        onPress={() => SetValues()}
-                    >
-                        <Text style = {{color:"#222629",fontSize: 20}}>
-                            Sign In
 
-                        </Text>
-                    </Button>
-
-                </View>
-                <View style = {{flex: 0.2, alignItems: "center"}}>
-                    <Text style = {{color:"#6B6E70", fontSize: 20}}>Don't have an account? <Text style = {{color:"#86C232"}}>Create one</Text></Text>
-                </View>
+            <Chip
+                title="SIGN IN"
+                containerStyle = {{width:"95%", marginLeft:"4%"}}
+                buttonStyle = {{height:"40%",alignContent:"center",backgroundColor:"#61892F"}}
+                titleStyle = {{fontSize:20, letterSpacing:3}}
+            />
+            </View>
+            <View style = {{flex: 0.2, alignItems: "center"}}>
+                <Text style = {{color:"#6B6E70", fontSize: 20}}>Don't have an account? <Text style = {{color:"#86C232"}}>Create one</Text></Text>
+            </View>
             </View>
             <Snackbar
             visible = {visible}

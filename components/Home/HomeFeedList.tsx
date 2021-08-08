@@ -8,6 +8,8 @@ const HomeFeedList = () =>{
     return (
       <View style = {{flex:1}}>
       <ScrollView
+      scrollEnabled
+      keyboardDismissMode = "on-drag"
       >
               {
                 list.map((el)=> (

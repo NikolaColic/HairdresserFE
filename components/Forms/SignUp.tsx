@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderComponent from "../Header/HeaderComponent";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { Input } from "react-native-elements/dist/input/Input";
+import { Chip } from "react-native-elements/dist/buttons/Chip";
 
 const UpdateAccount = () => {
     const [name, setName] = React.useState<string> ("");
@@ -127,34 +128,13 @@ const UpdateAccount = () => {
             color='#61892F'
             />}
         /> 
-{/* 
-      <Input
-        placeholder='Confirm password..' 
-        placeholderTextColor = "#474B4F"
-        label = "Confirm password"
 
-        labelStyle = {{color:"#61892F"}}
-        inputContainerStyle = {{borderColor: "#474B4F"}}
-        inputStyle = {{color:"white"}}
-        value = {confirm}
-        onChangeText = {(confirm) => setConfirm(confirm)}
-        leftIcon={
-            <Icon
-            name = "bank-outline" type ="material-community"
-            size={24}
-            color='#61892F'
-            />}
-        /> 
-              
-              */}
-              <Button
-                  mode = "outlined"
-                  style = {{backgroundColor: "#86C232", justifyContent:"center", height:45,marginBottom:"5%"}}
-              >
-                  <Text style = {{color:"#222629",fontSize: 20}}>
-                      Sign up
-                  </Text>
-              </Button>
+              <Chip
+                title="SIGN UP"
+                containerStyle = {{width:"95%", marginLeft:"4%"}}
+                buttonStyle = {{height:"29%",alignContent:"center",backgroundColor:"#61892F"}}
+                titleStyle = {{fontSize:20, letterSpacing:3}}
+            />
           </View>
           
       </SafeAreaView>

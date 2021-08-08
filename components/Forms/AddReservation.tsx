@@ -110,18 +110,12 @@ const AddReservation = () => {
                     />}
             /> 
             
-                    <Button
-                        mode = "outlined"
-                        style = {{backgroundColor: "#61892F",height:"20%", justifyContent:"center", marginTop:"7%"}}
-                        onPress={() => console.log("s")}
-                    >
-                        <Text 
-                        
-                        style = {{color:"#222629",fontSize: 17}}>
-                            Create reservation
-
-                        </Text>
-                    </Button>
+            <Chip 
+                title="Create reservation"
+                containerStyle = {{width:"95%", marginLeft:"4%"}}
+                buttonStyle = {{height:"45%",backgroundColor:"#61892F"}}
+                titleStyle = {{fontSize:20, letterSpacing:3}}
+            />
             </View>
 
          </SafeAreaView>
