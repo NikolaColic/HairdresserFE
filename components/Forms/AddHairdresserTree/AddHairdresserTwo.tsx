@@ -18,7 +18,7 @@ const AddHairdresserTwo = () => {
             marginLeft: "5%",
           }}
         >
-          <Text style={{ color: "#86C232", fontSize: 20, letterSpacing:3}}>
+          <Text style={{ color: "#86C232", fontSize: 20, letterSpacing:3,fontFamily:"sans-serif-medium"}}>
             Add contact information:
           </Text>
           
@@ -28,7 +28,7 @@ const AddHairdresserTwo = () => {
         placeholder='Enter email..' 
         placeholderTextColor = "#474B4F"
         label = "Email"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         leftIcon={
@@ -44,7 +44,7 @@ const AddHairdresserTwo = () => {
         placeholderTextColor = "#474B4F"
         keyboardType = "numeric"
         label = "Number"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         leftIcon={
@@ -60,7 +60,7 @@ const AddHairdresserTwo = () => {
         placeholderTextColor = "#474B4F"
         label = "Website URL"
         keyboardType = "url"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         leftIcon={
@@ -75,7 +75,7 @@ const AddHairdresserTwo = () => {
         placeholderTextColor = "#474B4F"
         label = "Facebook"
         keyboardType = "url"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         leftIcon={
@@ -91,7 +91,7 @@ const AddHairdresserTwo = () => {
         placeholderTextColor = "#474B4F"
         label = "Instagram"
         keyboardType = "url"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         leftIcon={

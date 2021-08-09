@@ -17,7 +17,7 @@ const HeaderComponent = () => {
         placement="center"
     
         leftComponent={<LeftComponent />}
-        centerComponent={{ text: "Welcome hairdresser", style: { color: "#86C232" } }}
+        centerComponent={{ text: "Welcome hairdresser", style: { color: "#86C232",fontFamily:"sans-serif-medium" } }}
         rightComponent={<RightComponent />}
       />
     </React.Fragment>

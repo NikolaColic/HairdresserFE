@@ -49,14 +49,14 @@ const SignIn = () =>{
         placeholderTextColor = "#474B4F"
         label = "Username"
 
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         value = {username}
         onChangeText = {(username) => setUsername(username)}
         leftIcon={
             <Icon
-            name = "alpha-s-circle-outline" type ="material-community"
+            name = "alpha-u-circle-outline" type ="material-community"
             size={24}
             color='#61892F'
             />}
@@ -66,7 +66,7 @@ const SignIn = () =>{
         placeholderTextColor = "#474B4F"
         label = "Password"
         secureTextEntry
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         value = {password}
@@ -81,13 +81,13 @@ const SignIn = () =>{
 
             <Chip
                 title="SIGN IN"
-                containerStyle = {{width:"95%", marginLeft:"4%"}}
+                containerStyle = {{width:"80%", marginLeft:"9%"}}
                 buttonStyle = {{height:"40%",alignContent:"center",backgroundColor:"#61892F"}}
-                titleStyle = {{fontSize:20, letterSpacing:3}}
+                titleStyle = {{fontSize:20, letterSpacing:3,fontFamily:"sans-serif-medium"}}
             />
             </View>
             <View style = {{flex: 0.2, alignItems: "center"}}>
-                <Text style = {{color:"#6B6E70", fontSize: 20}}>Don't have an account? <Text style = {{color:"#86C232"}}>Create one</Text></Text>
+                <Text style = {{color:"#6B6E70", fontSize: 20,fontFamily:"sans-serif-medium", marginTop:"3%"}}>Don't have an account? <Text style = {{color:"#86C232"}}>Create one</Text></Text>
             </View>
             </View>
             <Snackbar

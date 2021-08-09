@@ -21,13 +21,13 @@ const HairdresserOne = () => {
                 <View  style = {{flex: 0.3}}>
                     <View style ={{flex:1}} >
                         <ImageBackground source={image} resizeMode="cover" style = {{width:"100%", height:"100%", alignItems:"center", justifyContent:"center"}}>
-                            <Text style ={{color:"#86C232",fontSize:40, letterSpacing:4, textAlign:"center", textTransform:"uppercase"}}>
+                            <Text style ={{color:"#86C232",textShadowRadius:80,textShadowColor:"white",fontFamily:"sans-serif-medium",fontSize:40, letterSpacing:4, textAlign:"center", textTransform:"uppercase"}}>
                                 Irea frizerski salon
                             </Text>
                             <Chip
                                 title="Create reservation"
                                 type="outline"
-                                titleStyle = {{color:"white"}}
+                                titleStyle = {{color:"white",fontFamily:"sans-serif-medium"}}
                                 containerStyle = {{width:"35%", backgroundColor:"#474B4F", borderRadius:15, marginTop:"2%"}}
                             />
                         </ImageBackground>
@@ -38,37 +38,37 @@ const HairdresserOne = () => {
                     <ImageBackground source={image} resizeMode="cover" style = {{width:"100%", height:"100%", alignItems:"flex-start", justifyContent:"flex-start"}}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="cellphone" type ="material-community" size={30} color = "#86C232"/>
-                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%"}}>
+                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
                             0642125720
                             </Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="email-outline" type ="material-community" size={30} color = "#86C232"/>
-                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%"}}>
+                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
                             irea@gmail.com
                             </Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="map-marker-outline" type ="material-community" size={30} color = "#86C232"/>
-                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%"}}>
+                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
                             Naselje mose pijade 32
                             </Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="map-marker-radius-outline" type ="material-community" size={30} color = "#86C232"/>
-                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%"}}>
+                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
                             Vračar
                             </Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="account-circle-outline" type ="material-community" size={30} color = "#86C232"/>
-                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%"}}>
+                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
                             Nikola Čolić
                             </Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="gender-male-female" type ="material-community" size={30} color = "#86C232"/>
-                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%"}}>
+                            <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
                             Muski
                             </Text>
                         </View>

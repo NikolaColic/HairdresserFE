@@ -29,13 +29,13 @@ const HomeFeedList = () =>{
               <Button
                 title="Reservation"
                 icon={{ name: 'plus-circle-outline', color: 'white',type : "material-community" }}
-                buttonStyle={{ minHeight: '100%', backgroundColor: '#61892F' }}
+                buttonStyle={{ minHeight: '100%', backgroundColor: '#61892F'}}
               />
             }>
-            <Icon name="heart-outline" type ="material-community" color ="#61892F" size = {25} />
+            <Icon name="heart-outline"  type ="material-community" color ="#61892F" size = {25} />
             <ListItem.Content >
-              <ListItem.Title style = {{color:"#86C232"}}>Hello Swiper</ListItem.Title>
-              <ListItem.Subtitle style = {{color:"#6B6E70"}}>Naselje Mose Pijade 32</ListItem.Subtitle>
+              <ListItem.Title style = {{color:"#86C232",fontFamily: "sans-serif-medium"}}>Hello Swiper</ListItem.Title>
+              <ListItem.Subtitle style = {{color:"#6B6E70",fontFamily: "sans-serif-medium"}}>Naselje Mose Pijade 32</ListItem.Subtitle>
               
             </ListItem.Content>
             <ListItem.Chevron color = "#61892F" size = {30}/>

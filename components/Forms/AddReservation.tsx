@@ -36,7 +36,7 @@ const AddReservation = () => {
             <HeaderComponent  />
             <SafeAreaView style = {{flex: 1, backgroundColor: "#222629",flexDirection:"column"}}> 
             <View style = {{flex: 0.2,width: "90%", marginLeft:"5%"}}> 
-                <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232"}}>
+                <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232",fontFamily:"sans-serif-medium"}}>
                     Choose your hairdresser:
                 </Text>
                 <DropDownPicker
@@ -59,11 +59,12 @@ const AddReservation = () => {
                 
             </View>
             <View style = {{flex: 0.2,width: "90%", marginLeft:"5%"}}>
-                <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232"}}>
+                <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232",fontFamily:"sans-serif-medium"}}>
                     Choose date and time:
                 </Text>
                 <Chip title={dateTitle} 
                 containerStyle = {{marginTop:"3%",width:"60%"}}
+                titleStyle = {{fontFamily:"sans-serif-medium"}}
                 buttonStyle ={{backgroundColor:"#61892F"}}
                 onPress ={()=> setDateVisible(true)}/>
                 
@@ -75,7 +76,7 @@ const AddReservation = () => {
                         />
             </View>
             <View style = {{flex: 0.4,width: "90%", marginLeft:"5%"}}>
-            <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232"}}>
+            <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232",fontFamily:"sans-serif-medium"}}>
                     Add informations:
             </Text>
             <Input
@@ -83,7 +84,7 @@ const AddReservation = () => {
                 placeholderTextColor = "#474B4F"
                 label = "Description"
                 containerStyle = {{marginTop:"3%"}}
-                labelStyle = {{color:"#61892F"}}
+                labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
                 inputContainerStyle = {{borderColor: "#474B4F"}}
                 inputStyle = {{color:"white"}}
                 leftIcon={
@@ -97,7 +98,7 @@ const AddReservation = () => {
                 placeholder='Enter note..' 
                 placeholderTextColor = "#474B4F"
                 label = "Note"
-                labelStyle = {{color:"#61892F"}}
+                labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
                 containerStyle = {{marginTop:"3%"}}
 
                 inputContainerStyle = {{borderColor: "#474B4F"}}
@@ -112,7 +113,7 @@ const AddReservation = () => {
             
             <Chip 
                 title="Create reservation"
-                containerStyle = {{width:"95%", marginLeft:"4%"}}
+                containerStyle = {{width:"85%", marginLeft:"6%"}}
                 buttonStyle = {{height:"45%",backgroundColor:"#61892F"}}
                 titleStyle = {{fontSize:20, letterSpacing:3}}
             />

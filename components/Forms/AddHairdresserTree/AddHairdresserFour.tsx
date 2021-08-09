@@ -33,7 +33,7 @@ const AddHairdresserFour = () => {
         maxLength = {500}
         numberOfLines = {7}
         label = "Description"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         leftIcon={
@@ -51,7 +51,7 @@ const AddHairdresserFour = () => {
         multiline
         maxLength = {500}
         numberOfLines = {7}
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         leftIcon={

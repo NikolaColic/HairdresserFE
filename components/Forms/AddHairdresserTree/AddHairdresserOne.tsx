@@ -20,7 +20,7 @@ const AddHairdresserOne = () => {
             marginLeft: "5%",
           }}
         >
-          <Text style={{ color: "#86C232", fontSize: 20, letterSpacing:3}}>
+          <Text style={{ color: "#86C232", fontSize: 20, letterSpacing:3,fontFamily:"sans-serif-medium"}}>
             Add basic information:
           </Text>
           
@@ -30,7 +30,7 @@ const AddHairdresserOne = () => {
         placeholder='Enter name..' 
         placeholderTextColor = "#474B4F"
         label = "Name"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         leftIcon={
@@ -45,7 +45,7 @@ const AddHairdresserOne = () => {
         placeholder='Enter adress..' 
         placeholderTextColor = "#474B4F"
         label = "Adress"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         leftIcon={
@@ -61,7 +61,7 @@ const AddHairdresserOne = () => {
         placeholderTextColor = "#474B4F"
         label = "Tax id"
         keyboardType = "numeric"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         leftIcon={
@@ -77,7 +77,7 @@ const AddHairdresserOne = () => {
         placeholderTextColor = "#474B4F"
         label = "Parent id"
         keyboardType = "numeric"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         leftIcon={

@@ -55,7 +55,7 @@ const ReservationList: React.SFC<CustomCarouselProps> = () => {
     <React.Fragment>
         <HeaderComponent />
         <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#222629", flexDirection: "column", flexWrap:"wrap" }} >
+        style={{ flex: 1, backgroundColor: "#222629", flexDirection: "column", flexWrap:"wrap"}} >
         <View style = {{flex: 0.1, flexDirection:"row",marginTop:"5%",flexWrap: "wrap", marginLeft:"5%"}}>
               <View style ={{flex: 1}}>
               <Chip
@@ -135,7 +135,7 @@ const ReservationList: React.SFC<CustomCarouselProps> = () => {
               
           </View>
         <View style = {{flex: 0.1}}>
-            <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232",marginLeft:"5%"}}>
+            <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232",marginLeft:"5%",fontFamily: "sans-serif-medium"}}>
                     List of reservations:
             </Text>
 
@@ -162,12 +162,12 @@ const ReservationListCard = () =>{
     return (
         <React.Fragment>
             <Card style = {{backgroundColor:"#474B4F", borderWidth:1, borderColor:"#61892F",opacity:1,borderRadius:20, marginRight:"-3%"}}>
-                <Card.Title titleStyle ={{color:"#86C232",fontSize:20, letterSpacing:2.5}} subtitleStyle ={{color:"white",fontSize:14}} title="Irea frizerski salon" subtitle="Naselje mose pijade, 0642125720" left={LeftContent} />
+                <Card.Title titleStyle ={{color:"#86C232",fontSize:20, letterSpacing:2.5, fontFamily: "sans-serif-medium"}} subtitleStyle ={{color:"white",fontSize:14}} title="Irea frizerski salon" subtitle="Naselje mose pijade, 0642125720" left={LeftContent} />
                 <Card.Content>
-                <Text style = {{fontSize:20,color:"white"}}><Text style = {{color:"#86C232"}}>Datum:</Text> 06/10/2020 15:49 </Text>
-                <Text style = {{fontSize:20,color:"white"}}><Text style = {{color:"#86C232"}}>Status:</Text> Aktivan </Text>
-                <Text style = {{color:"#86C232",fontSize:20}}>Opis:</Text>
-                <Text style = {{fontSize:20, textAlign:"justify",color:"white"}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus 
+                <Text style = {{fontSize:20,color:"white",fontFamily: "sans-serif-medium"}}><Text style = {{color:"#86C232"}}>Datum:</Text> 06/10/2020 15:49 </Text>
+                <Text style = {{fontSize:20,color:"white",fontFamily: "sans-serif-medium"}}><Text style = {{color:"#86C232"}}>Status:</Text> Aktivan </Text>
+                <Text style = {{color:"#86C232",fontSize:20,fontFamily: "sans-serif-medium"}}>Opis:</Text>
+                <Text style = {{fontSize:20, textAlign:"justify",color:"white",fontFamily: "sans-serif-medium"}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus 
                     cum voluptas soluta quidem pariatur optio dolore eligendi 
                     voluptates quibusdam sequi fugit nulla iure ipsum exercitationem, dicta assumenda porro doloribus asperiores?</Text>
                 </Card.Content>

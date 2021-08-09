@@ -24,15 +24,20 @@ const HomeFeed = () => {
 
 
 const HomeFeedChip = () =>{
+    const [active, setActive] = React.useState<number> (0);
+    
+
     return (
         <React.Fragment >
             <View style ={{flex: 0.1,flexDirection:"row", marginTop:"5%"}}>
             <View style ={{flex: 1}}>
             <Chip
-                title="Favourite"
+                title="All"
                 type="outline"
-                titleStyle = {{color:"white"}}
-                containerStyle = {{width:"90%"}}
+                buttonStyle = {active === 1 ? {backgroundColor:"#61892F"} : {}}
+                titleStyle = {{color:"white",fontFamily: "sans-serif-medium"}}
+                containerStyle = { {width:"90%"}}
+                onPress = {()=> setActive(1)}
                 style = {{backgroundColor:"red"}}
             />
             </View>
@@ -40,17 +45,21 @@ const HomeFeedChip = () =>{
             <Chip
                 title="Popular"
                 type="outline"
-                titleStyle = {{color:"white"}}
+                buttonStyle = {active === 2 ? {backgroundColor:"#61892F"} : {}}
+                titleStyle = {{color:"white",fontFamily: "sans-serif-medium"}}
                 containerStyle = {{width:"90%"}}
+                onPress = {()=> setActive(2)}
                 style = {{backgroundColor:"red"}}
             />
             </View>
             <View style ={{flex: 1}}>
             <Chip
-                title="All"
+                title="Favourite"
                 type="outline"
-                titleStyle = {{color:"white"}}
+                buttonStyle = {active === 3 ? {backgroundColor:"#61892F"} : {}}
+                titleStyle = {{color:"white",fontFamily: "sans-serif-medium"}}
                 containerStyle = {{width:"90%"}}
+                onPress = {()=> setActive(3)}
                 style = {{backgroundColor:"red"}}
             />
             </View>

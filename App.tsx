@@ -10,7 +10,6 @@ import SignIn from './components/Forms/SignIn';
 import SignUp from './components/Forms/SignUp';
 import HomeFeed from './components/Home/HomeFeed';
 import ReservationList from './components/Home/ReservationList';
-import FavouriteList from './components/Home/FavouriteList';
 import UpdateAccount from './components/Forms/UpdateAccount';
 import MyHairdresser from './components/Home/MyHairdresser';
 import AddHairdresser from './components/Forms/AddHairdresser';
@@ -39,16 +38,16 @@ const  App = () => {
              drawerStyle = {{backgroundColor:"#222629",borderRadius:1,marginVertical: 0,borderRightWidth:0.5,borderRightColor:'#86C232'}} >
                 <Drawer.Screen name="Home" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="home" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={HomeFeed}  />  
+                component={SignIn}  />  
                 <Drawer.Screen name="Sign In" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="login-variant" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={HairdresserOne}  />
+                component={AddHairdresser}  />
                 <Drawer.Screen name="Sign Up" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="account-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={AddReservation} />
+                component={HomeFeed} />
                 <Drawer.Screen name="Change password" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={ChangePassword} />
+                component={UpdateAccount} />
 
               </Drawer.Navigator>
            ) : number == 2 ? (
@@ -66,7 +65,7 @@ const  App = () => {
               component={ReservationList} />
               <Drawer.Screen name="My favourites" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={FavouriteList} />
+              component={HomeFeed} />
               <Drawer.Screen name="Edit profile" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="account-edit-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
               component={UpdateAccount} />
@@ -87,7 +86,7 @@ const  App = () => {
             component={ReservationList} />
             <Drawer.Screen name="My favourites" 
             options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-            component={FavouriteList} />
+            component={HomeFeed} />
             <Drawer.Screen name="My hairdressers" 
             options ={{drawerIcon:({focused, size}) => ( <Icon name="hair-dryer-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
             component={MyHairdresser} />
@@ -110,7 +109,7 @@ const  App = () => {
             component={ReservationList} />
             <Drawer.Screen name="My favourites" 
             options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-            component={FavouriteList} />
+            component={HomeFeed} />
             <Drawer.Screen name="My hairdressers" 
             options ={{drawerIcon:({focused, size}) => ( <Icon name="hair-dryer-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
             component={MyHairdresser} />

@@ -31,7 +31,7 @@ const UpdateAccount = () => {
         placeholderTextColor = "#474B4F"
         label = "Name"
 
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         value = {name}
@@ -48,7 +48,7 @@ const UpdateAccount = () => {
         placeholderTextColor = "#474B4F"
         label = "Surname"
 
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         value = {surname}
@@ -65,7 +65,7 @@ const UpdateAccount = () => {
         placeholderTextColor = "#474B4F"
         label = "Email"
         keyboardType = "email-address"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         value = {email}
@@ -82,7 +82,7 @@ const UpdateAccount = () => {
         placeholderTextColor = "#474B4F"
         label = "Number"
         keyboardType = "number-pad"
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         value = {mobile}
@@ -99,7 +99,7 @@ const UpdateAccount = () => {
         placeholderTextColor = "#474B4F"
         label = "Username"
 
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         value = {username}
@@ -116,7 +116,7 @@ const UpdateAccount = () => {
         placeholderTextColor = "#474B4F"
         label = "Password"
         secureTextEntry
-        labelStyle = {{color:"#61892F"}}
+        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
         value = {password}
@@ -131,9 +131,9 @@ const UpdateAccount = () => {
 
               <Chip
                 title="SIGN UP"
-                containerStyle = {{width:"95%", marginLeft:"4%"}}
+                containerStyle = {{width:"80%", marginLeft:"10%"}}
                 buttonStyle = {{height:"29%",alignContent:"center",backgroundColor:"#61892F"}}
-                titleStyle = {{fontSize:20, letterSpacing:3}}
+                titleStyle = {{fontSize:20, letterSpacing:3,fontFamily:"sans-serif-medium"}}
             />
           </View>
           
