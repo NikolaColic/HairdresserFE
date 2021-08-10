@@ -17,7 +17,7 @@ const HeaderComponent = () => {
         placement="center"
     
         leftComponent={<LeftComponent />}
-        centerComponent={{ text: "Welcome hairdresser", style: { color: "#86C232",fontFamily:"sans-serif-medium" } }}
+        centerComponent={{ text: "Welcome hairdresser", style: { color: "#86C232",fontFamily:"sans-serif-medium",fontSize:18 } }}
         rightComponent={<RightComponent />}
       />
     </React.Fragment>
@@ -30,15 +30,16 @@ const LeftComponent = () => {
   const navigation = useNavigation();
   return (
     <React.Fragment>
-      <Icon name="menu" type="entypo" color = "#86C232"  onPress={() => navigation.dispatch(DrawerActions.openDrawer())} />
+      <Icon name="menu" type="entypo" size ={30} color = "#86C232"  onPress={() => navigation.dispatch(DrawerActions.openDrawer())} />
     </React.Fragment>
   );
 };
 
 const RightComponent = () => {
+  const navigation = useNavigation();
   return (
     <React.Fragment>
-      <Icon name="home" type="entypo" color = "#86C232" />
+      <Icon name="home" size = {30} type="entypo" color = "#86C232" onPress={() => navigation.navigate('Home')} />
     </React.Fragment>
   );
 };

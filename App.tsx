@@ -2,7 +2,6 @@ import 'react-native-gesture-handler';
 import React from 'react';
 
 import useCachedResources from './hooks/useCachedResources';
-import { Text, View } from 'react-native';
 import { createDrawerNavigator} from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import HeaderComponent from './components/Header/HeaderComponent';
@@ -21,7 +20,7 @@ const Drawer = createDrawerNavigator();
 
 const  App = () => {
   const isLoadingComplete = useCachedResources();
-  const [number, setNumber] = React.useState<number> (1);
+  const [number, setNumber] = React.useState<number> (4);
   if (!isLoadingComplete) {
     return null;   
    
@@ -30,7 +29,7 @@ const  App = () => {
       <NavigationContainer> 
          {
            number == 1 ? (
-             <Drawer.Navigator initialRouteName="HomeFeed" 
+             <Drawer.Navigator initialRouteName="Home" 
              drawerType = "front"
              drawerContentOptions ={{activeBackgroundColor : "#6B6E70",activeTintColor:"#86C232", inactiveTintColor: "#6B6E70"
              ,itemStyle: { borderRadius:1,marginVertical: 0,borderBottomWidth:0.5,borderBottomColor:'#6B6E70' }
@@ -38,20 +37,18 @@ const  App = () => {
              drawerStyle = {{backgroundColor:"#222629",borderRadius:1,marginVertical: 0,borderRightWidth:0.5,borderRightColor:'#86C232'}} >
                 <Drawer.Screen name="Home" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="home" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={SignIn}  />  
+                component={HomeFeed}  />  
                 <Drawer.Screen name="Sign In" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="login-variant" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={AddHairdresser}  />
+                component={SignIn}  />
                 <Drawer.Screen name="Sign Up" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="account-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={HomeFeed} />
-                <Drawer.Screen name="Change password" 
-                options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={UpdateAccount} />
+                component={SignUp} />
+                
 
               </Drawer.Navigator>
            ) : number == 2 ? (
-          <Drawer.Navigator initialRouteName="HomeFeed" 
+          <Drawer.Navigator initialRouteName="Home" 
             drawerType = "front"
             drawerContentOptions ={{activeBackgroundColor : "#6B6E70",activeTintColor:"#86C232", inactiveTintColor: "#6B6E70"
             ,itemStyle: { borderRadius:1,marginVertical: 0,borderBottomWidth:0.5,borderBottomColor:'#6B6E70' }
@@ -62,16 +59,22 @@ const  App = () => {
                 component={HomeFeed} /> 
               <Drawer.Screen name="My reservation" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="note-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={ReservationList} />
+              component={() => <ReservationList />} />
               <Drawer.Screen name="My favourites" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
               component={HomeFeed} />
+              <Drawer.Screen name="Create reservation" 
+              options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+              component={AddReservation} />
               <Drawer.Screen name="Edit profile" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="account-edit-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
               component={UpdateAccount} />
+              <Drawer.Screen name="Change password" 
+                options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+                component={ChangePassword} />
             </Drawer.Navigator>
            ) : number == 3 ? (
-            <Drawer.Navigator initialRouteName="HomeFeed" 
+            <Drawer.Navigator initialRouteName="Home" 
             drawerType = "front"
             drawerContentOptions ={{activeBackgroundColor : "#6B6E70",activeTintColor:"#86C232", inactiveTintColor: "#6B6E70"
             ,itemStyle: { borderRadius:1,marginVertical: 0,borderBottomWidth:0.5,borderBottomColor:'#6B6E70' }
@@ -90,12 +93,18 @@ const  App = () => {
             <Drawer.Screen name="My hairdressers" 
             options ={{drawerIcon:({focused, size}) => ( <Icon name="hair-dryer-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
             component={MyHairdresser} />
-            <Drawer.Screen name="Edit profile" 
-            options ={{drawerIcon:({focused, size}) => ( <Icon name="account-edit-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-            component={UpdateAccount} />
+            <Drawer.Screen name="Create reservation" 
+              options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+              component={AddReservation} />
+              <Drawer.Screen name="Edit profile" 
+              options ={{drawerIcon:({focused, size}) => ( <Icon name="account-edit-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+              component={UpdateAccount} />
+              <Drawer.Screen name="Change password" 
+                options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+                component={ChangePassword} />
           </Drawer.Navigator>
            ) : (
-          <Drawer.Navigator initialRouteName="HomeFeed" 
+          <Drawer.Navigator initialRouteName="Home" 
           drawerType = "front"
           drawerContentOptions ={{activeBackgroundColor : "#6B6E70",activeTintColor:"#86C232", inactiveTintColor: "#6B6E70"
           ,itemStyle: { borderRadius:1,marginVertical: 0,borderBottomWidth:0.5,borderBottomColor:'#6B6E70' }
@@ -116,9 +125,18 @@ const  App = () => {
             <Drawer.Screen name="Add hairdresser" 
             options ={{drawerIcon:({focused, size}) => ( <Icon name="plus-circle-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
             component={AddHairdresser} />
-            <Drawer.Screen name="Edit profile" 
-            options ={{drawerIcon:({focused, size}) => ( <Icon name="account-edit-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-            component={UpdateAccount} />
+            <Drawer.Screen name="Create reservation" 
+              options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+              component={AddReservation} />
+              <Drawer.Screen name="Edit profile" 
+              options ={{drawerIcon:({focused, size}) => ( <Icon name="account-edit-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+              component={UpdateAccount} />
+              <Drawer.Screen name="Change password" 
+                options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+                component={ChangePassword} />
+              <Drawer.Screen name="Hairdresser one" 
+                options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+                component={HairdresserOne} />
           </Drawer.Navigator>
            )
          }

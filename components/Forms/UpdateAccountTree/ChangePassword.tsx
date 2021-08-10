@@ -3,10 +3,11 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { TextInput, Button, Snackbar } from 'react-native-paper';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { useNavigation,DrawerActions } from '@react-navigation/native';
+import { useNavigation} from '@react-navigation/native';
 import HeaderComponent from '../../Header/HeaderComponent';
 import { Input } from 'react-native-elements/dist/input/Input';
 import { Chip } from 'react-native-elements/dist/buttons/Chip';
+
 
 
 const ChangePassword = () =>{
@@ -91,7 +92,8 @@ const ChangePassword = () =>{
 
                 </View>
                 <View style = {{flex: 0.2, alignItems: "center"}}>
-                    <Text style = {{color:"#6B6E70", fontSize: 20, width:"80%", textAlign:'center', marginTop:"3%"}}>Do you want to update your account? <Text style = {{color:"#86C232"}}>Click here</Text></Text>
+                    <Text style = {{color:"#6B6E70", fontSize: 20, width:"80%", textAlign:'center', marginTop:"3%"}}>Do you want to update your account? 
+                    <Text style = {{color:"#86C232"}} onPress = {()=> navigation.navigate('Edit profile')}>Click here</Text></Text>
                 </View>
             </View>
             <Snackbar

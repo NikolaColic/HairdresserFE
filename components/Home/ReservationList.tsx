@@ -6,6 +6,7 @@ import { Card, Button,Avatar } from "react-native-paper";
 import Carousel from "react-native-snap-carousel";
 import HeaderComponent from "../Header/HeaderComponent";
 
+//DODATI I SHARE DUGME
 interface ItemProps {
   title: string;
   text: string;
@@ -59,6 +60,15 @@ const ReservationList: React.SFC<CustomCarouselProps> = () => {
         <View style = {{flex: 0.1, flexDirection:"row",marginTop:"5%",flexWrap: "wrap", marginLeft:"5%"}}>
               <View style ={{flex: 1}}>
               <Chip
+                  title="All"
+                  type="outline"
+                  titleStyle = {{color:"white"}}
+                  containerStyle = {{width:"90%"}}
+                  style = {{backgroundColor:"red"}}
+              />
+              </View>
+              <View style ={{flex: 1}}>
+              <Chip
                   title="Favourite"
                   type="outline"
                   titleStyle = {{color:"white"}}
@@ -68,36 +78,6 @@ const ReservationList: React.SFC<CustomCarouselProps> = () => {
               </View>
               <View style ={{flex: 1}}>
               <Chip
-                  title="Popular"
-                  type="outline"
-                  titleStyle = {{color:"white"}}
-                  containerStyle = {{width:"90%"}}
-                  style = {{backgroundColor:"red"}}
-              />
-              </View>
-              <View style ={{flex: 1}}>
-              <Chip
-                  title="All"
-                  type="outline"
-                  titleStyle = {{color:"white"}}
-                  containerStyle = {{width:"90%"}}
-                  style = {{backgroundColor:"red"}}
-              />
-              </View>
-              <View style ={{flex: 1}}>
-              <Chip
-                  title="All"
-                  type="outline"
-                  titleStyle = {{color:"white"}}
-                  containerStyle = {{width:"90%"}}
-                  style = {{backgroundColor:"red"}}
-              />
-              </View>
-              
-          </View>
-          <View style = {{flex: 0.1, flexDirection:"row",flexWrap: "wrap", marginLeft:"5%"}}>
-              <View style ={{flex: 1}}>
-              <Chip
                   title="Date"
                   type="outline"
                   titleStyle = {{color:"white"}}
@@ -105,35 +85,9 @@ const ReservationList: React.SFC<CustomCarouselProps> = () => {
                   style = {{backgroundColor:"red"}}
               />
               </View>
-              <View style ={{flex: 1}}>
-              <Chip
-                  title="Popular"
-                  type="outline"
-                  titleStyle = {{color:"white"}}
-                  containerStyle = {{width:"90%"}}
-                  style = {{backgroundColor:"red"}}
-              />
-              </View>
-              <View style ={{flex: 1}}>
-              <Chip
-                  title="All"
-                  type="outline"
-                  titleStyle = {{color:"white"}}
-                  containerStyle = {{width:"90%"}}
-                  style = {{backgroundColor:"red"}}
-              />
-              </View>
-              <View style ={{flex: 1}}>
-              <Chip
-                  title="All"
-                  type="outline"
-                  titleStyle = {{color:"white"}}
-                  containerStyle = {{width:"90%"}}
-                  style = {{backgroundColor:"red"}}
-              />
-              </View>
-              
+             
           </View>
+         
         <View style = {{flex: 0.1}}>
             <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232",marginLeft:"5%",fontFamily: "sans-serif-medium"}}>
                     List of reservations:
@@ -162,7 +116,8 @@ const ReservationListCard = () =>{
     return (
         <React.Fragment>
             <Card style = {{backgroundColor:"#474B4F", borderWidth:1, borderColor:"#61892F",opacity:1,borderRadius:20, marginRight:"-3%"}}>
-                <Card.Title titleStyle ={{color:"#86C232",fontSize:20, letterSpacing:2.5, fontFamily: "sans-serif-medium"}} subtitleStyle ={{color:"white",fontSize:14}} title="Irea frizerski salon" subtitle="Naselje mose pijade, 0642125720" left={LeftContent} />
+                <Card.Title titleStyle ={{color:"#86C232",fontSize:20, letterSpacing:2.5, fontFamily: "sans-serif-medium"}} 
+                subtitleStyle ={{color:"white",fontSize:14}} title="Irea frizerski salon" subtitle="Naselje mose pijade, 0642125720" left={LeftContent} />
                 <Card.Content>
                 <Text style = {{fontSize:20,color:"white",fontFamily: "sans-serif-medium"}}><Text style = {{color:"#86C232"}}>Datum:</Text> 06/10/2020 15:49 </Text>
                 <Text style = {{fontSize:20,color:"white",fontFamily: "sans-serif-medium"}}><Text style = {{color:"#86C232"}}>Status:</Text> Aktivan </Text>
@@ -172,6 +127,8 @@ const ReservationListCard = () =>{
                     voluptates quibusdam sequi fugit nulla iure ipsum exercitationem, dicta assumenda porro doloribus asperiores?</Text>
                 </Card.Content>
                 <Card.Actions style = {{marginBottom:"3%"}}>
+                <Button style = {{backgroundColor:"#61892F",width:"30%", marginLeft: "67%"}}> <Text style = {{color:"white"}}>Share</Text></Button>
+
                 <Button style = {{backgroundColor:"#61892F",width:"30%", marginLeft: "67%"}}> <Text style = {{color:"white"}}>Delete</Text></Button>
                 </Card.Actions>
             </Card>
