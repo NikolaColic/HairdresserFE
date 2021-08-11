@@ -8,9 +8,18 @@ import { Icon } from "react-native-elements/dist/icons/Icon";
 import { useNavigation} from '@react-navigation/native';
 import { Input } from "react-native-elements/dist/input/Input";
 import { Chip } from "react-native-elements/dist/buttons/Chip";
+import { User } from "../../model/User";
 
 
-const UpdateAccount = () => {
+
+
+interface Props  {
+  UpdateAccount : (user : User, isChange : boolean) => void;
+  user : User | null;
+  text : string;
+}
+
+const UpdateAccount = (props : Props) => {
     const [name, setName] = React.useState<string> ("");
     const [surname, setSurname] = React.useState<string> ("");
     const [email, setEmail] = React.useState<string> ("");
@@ -18,10 +27,31 @@ const UpdateAccount = () => {
     const [username, setUsername] = React.useState<string> ("");
     const navigation = useNavigation();
 
+    const UpdateAccount = ()=>{
+      if(props.user !== null){
+        props.user.name = name;
+        props.user.surname = surname;
+        props.user.email = email;
+        props.user.number = mobile;
+        props.user.username = username;
+        props.UpdateAccount(props.user,false);
+      }
+    }
+
+    React.useEffect(()=>{
+      if(props.user !== null){
+        setName(props.user.name);
+        setSurname(props.user.surname);
+        setEmail(props.user.email);
+        setMobile(props.user.number);
+        setUsername(props.user.username);
+      }
+    },[props.user !== null])
+
 
   return (
     <React.Fragment>
-      <HeaderComponent  />
+      <HeaderComponent text = {props.text} />
       <SafeAreaView
         style={{ flex: 1, backgroundColor: "#222629", flexDirection: "column" }}
       >
@@ -117,6 +147,7 @@ const UpdateAccount = () => {
                 containerStyle = {{width:"80%", marginLeft:"10%"}}
                 buttonStyle = {{backgroundColor:"#61892F"}}
                 titleStyle = {{fontSize:17, letterSpacing:3,fontFamily:"sans-serif-medium"}}
+                onPress ={()=> UpdateAccount()}
             />
             <Chip
                 title="CHANGE PASSWORD"

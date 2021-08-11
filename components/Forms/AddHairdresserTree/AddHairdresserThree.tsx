@@ -1,26 +1,37 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {View, Text} from 'react-native'
+import {View, Text, InteractionManager} from 'react-native'
 import { Chip } from 'react-native-elements';
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker, { ItemType } from 'react-native-dropdown-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Input } from 'react-native-elements/dist/input/Input';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
+import { User } from '../../../model/User';
 
-const AddHairdresserThree = () => {
+interface Props {
+  users : User[]; 
+  value : string | null;
+  setValue : (value : string |null) => void; 
+  gender : number;
+  setGender : (gender : number) => void; 
+  municipality : string; 
+  setMunicipality : (municipality : string) => void;
+}
+
+const AddHairdresserThree = (props : Props) => {
   const [open, setOpen] = React.useState<boolean>(false);
-  const [value, setValue] = React.useState(null);
   const [checked, setChecked] = React.useState<number>(0);
-  const [items, setItems] = React.useState([
-    {label: 'Apple', value: 'apple'},
-    {label: 'Banana', value: 'banana1'},
-    {label: 'Banana', value: 'banana2'},
-    {label: 'Banana', value: 'banana3'},
-    {label: 'Banana', value: 'banana4'},
-    {label: 'Banana', value: 'banana5'},
-    {label: 'Banana', value: 'banana6'},
-  ]);
+  const [items, setItems] = React.useState<ItemType[]>([]);
+
+  React.useEffect(()=>{
+    var itemTypes : ItemType[] = [];
+    props.users.map((el)=>{
+        var itemType : ItemType = {label: el.username, value: el.username}
+        itemTypes.push(itemType);
+    })
+    setItems(itemTypes);
+  },[])
  
   return (
     <React.Fragment>
@@ -32,14 +43,14 @@ const AddHairdresserThree = () => {
                 <DropDownPicker
                     
                     open={open}
-                    value={value}
+                    value={props.value}
                     items={items}
                     searchable
                     loading
                     placeholder = "Search users.."
                     // onChangeSearchText
                     setOpen={setOpen}
-                    setValue={setValue}
+                    setValue={props.setValue}
                     setItems={setItems}
                     textStyle = {{color: "white"}}
                     style ={{backgroundColor:"#6B6E70", marginTop:"5%"}}
@@ -57,7 +68,8 @@ const AddHairdresserThree = () => {
                 <Input
                   placeholder='Enter municipality id..' 
                   placeholderTextColor = "#474B4F"
-                  
+                  value = {props.municipality}
+                  onChangeText = {(text)=> props.setMunicipality(text)}
                   label = "Municipality"
                   labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
                   inputContainerStyle = {{borderColor: "#474B4F"}}
@@ -81,8 +93,8 @@ const AddHairdresserThree = () => {
                   checkedIcon='radiobox-marked'
                   iconType = "material-community"
                   checkedColor = "white"
-                  checked = {checked == 1}
-                  onPress = {()=> setChecked(1)}
+                  checked = {props.gender == 1}
+                  onPress = {()=> props.setGender(1)}
                   uncheckedIcon='radiobox-blank'
                 /> 
                 <CheckBox
@@ -93,8 +105,8 @@ const AddHairdresserThree = () => {
                   checkedIcon='radiobox-marked'
                   iconType = "material-community"
                   checkedColor = "white"
-                  checked = {checked == 2}
-                  onPress = {()=> setChecked(2)}
+                  checked = {props.gender == 2}
+                  onPress = {()=> props.setGender(2)}
                   uncheckedIcon='radiobox-blank'
                   // checked={this.state.checked}
                 /> 
@@ -106,8 +118,8 @@ const AddHairdresserThree = () => {
                   checkedIcon='radiobox-marked'
                   iconType = "material-community"
                   checkedColor = "white"
-                  checked = {checked == 3}
-                  onPress = {()=> setChecked(3)}
+                  checked = {props.gender == 3}
+                  onPress = {()=> props.setGender(3)}
                   uncheckedIcon='radiobox-blank'
                 />  
                 </View>

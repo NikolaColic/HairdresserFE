@@ -7,20 +7,31 @@ import HeaderComponent from "../Header/HeaderComponent";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { Input } from "react-native-elements/dist/input/Input";
 import { Chip } from "react-native-elements/dist/buttons/Chip";
+import { User } from "../../model/User";
 
-const UpdateAccount = () => {
+
+interface Props  {
+  SignUpApi : (user : User) => void;
+  text : string;
+}
+
+
+const UpdateAccount = (props : Props) => {
     const [name, setName] = React.useState<string> ("");
     const [surname, setSurname] = React.useState<string> ("");
     const [email, setEmail] = React.useState<string> ("");
     const [mobile, setMobile] = React.useState<string> ("");
     const [username, setUsername] = React.useState<string> ("");
     const [password, setPassword] = React.useState<string> ("");
-    const [confirm, setConfirm] = React.useState<string> ("");
 
+    const SignUpApi = ()=>{
+      var user : User = new User(0,name,surname,username,email,new Date(),mobile,password,"",[],[],[]);
+      props.SignUpApi(user);
+    }
 
   return (
     <React.Fragment>
-      <HeaderComponent  />
+      <HeaderComponent text = {props.text} />
       <SafeAreaView
         style={{ flex: 1, backgroundColor: "#222629", flexDirection: "column" }}
       >
@@ -134,6 +145,7 @@ const UpdateAccount = () => {
                 containerStyle = {{width:"80%", marginLeft:"10%"}}
                 buttonStyle = {{height:"29%",alignContent:"center",backgroundColor:"#61892F"}}
                 titleStyle = {{fontSize:20, letterSpacing:3,fontFamily:"sans-serif-medium"}}
+                onPress = {()=> SignUpApi()}
             />
           </View>
           

@@ -3,39 +3,36 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { TextInput, Button, Snackbar } from 'react-native-paper';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { useNavigation,DrawerActions } from '@react-navigation/native';
+import { useNavigation} from '@react-navigation/native';
 import HeaderComponent from '../Header/HeaderComponent';
 import { Input } from 'react-native-elements/dist/input/Input';
 import { Chip } from 'react-native-elements/dist/buttons/Chip';
 
 
-const SignIn = () =>{
+interface Props  {
+    SignInApi : (username : string, password : string) => void;
+    text : string;
+}
+const SignIn = (props : Props) =>{
     const [username, setUsername] = React.useState<string> ("");
-    const [text, setText] = React.useState<string> ("");
+    const [text, setText] = React.useState<string | null> (null);
     const [password, setPassword] = React.useState<string> ("");
-    const [visible, setVisible] = React.useState<boolean> (false);
     const navigation = useNavigation();
-    const SetValues = () => {
-        if(username == "miljana"){
-            setVisible(true);
-            setText("Cao gospodjice Miljana")
+    
+    const SignInApi = () =>{
+        if(username.length === 0) {
+            setText("Empty entry");
+            return;
         }
-        if(username == "rad"){
-            setVisible(true);
-            setText("Hteo sam da te pitam sta radis?")
+        if(password.length <5){
+            setText("Password must have at least 5 characketers");
+            return;
         }
-        if(username == "zlatibor"){
-            setVisible(true);
-            setText("Kakvi su ti krajnji utisci sa radionica?")
-        }
-        if(username == "projekat"){
-            setVisible(true);
-            setText("btw ovo za master pravim neku apl :) ")
-        }
+        props.SignInApi(username, password);
     }
     return (
         <React.Fragment>
-        <HeaderComponent  />
+        <HeaderComponent text = {props.text} />
 
             <View style = {{flex: 1, backgroundColor: "#222629",flexDirection:"column"}}> 
                 <View style = {{flex: 0.3, alignItems: "center", justifyContent: "center"}}>
@@ -84,20 +81,22 @@ const SignIn = () =>{
                 containerStyle = {{width:"80%", marginLeft:"9%"}}
                 buttonStyle = {{height:"40%",alignContent:"center",backgroundColor:"#61892F"}}
                 titleStyle = {{fontSize:20, letterSpacing:3,fontFamily:"sans-serif-medium"}}
+                onPress = {()=> SignInApi()}
             />
             </View>
             <View style = {{flex: 0.2, alignItems: "center"}}>
-                <Text style = {{color:"#6B6E70", fontSize: 20,fontFamily:"sans-serif-medium", marginTop:"3%"}}>Don't have an account? <Text style = {{color:"#86C232"}}>Create one</Text></Text>
+                <Text style = {{color:"#6B6E70", fontSize: 20,fontFamily:"sans-serif-medium", marginTop:"3%"}}>Don't have an account? 
+                <Text style = {{color:"#86C232"}} onPress = {()=> navigation.navigate('SignUp')}>Create one</Text></Text>
             </View>
             </View>
             <Snackbar
-            visible = {visible}
-            onDismiss = {() => setVisible(false)}
+            visible = {text !== null}
+            onDismiss = {() => setText(null)}
             duration = {5000}
             action={{
                 label: 'X',
                 onPress: () => {
-                  setVisible(false)
+                  setText(null)
                 },
               }}>
             

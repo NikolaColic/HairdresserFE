@@ -5,7 +5,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { Input } from "react-native-elements/dist/input/Input";
 
-const AddHairdresserOne = () => {
+interface Props {
+  name : string 
+  setName: (name : string) => void;
+  parentId : string;
+  setParentId: (parentId : string) => void;
+  taxId : string 
+  setTaxId: (taxId : string) => void;
+  adress : string 
+  setAdress: (adress : string) => void;
+
+}
+
+const AddHairdresserOne = (props : Props) => {
    
   return (
     <React.Fragment>

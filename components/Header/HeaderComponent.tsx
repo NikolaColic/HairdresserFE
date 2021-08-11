@@ -2,14 +2,15 @@ import "react-native-gesture-handler";
 import React from "react";
 import { Header, Icon } from "react-native-elements";
 import { useNavigation,DrawerActions } from '@react-navigation/native';
+import { PropsWithoutRef } from "react";
 
 
 
 interface Props {
-  navigation: any;
+  text : string;
 }
 
-const HeaderComponent = () => {
+const HeaderComponent = (props : Props) => {
   return (
     <React.Fragment>
       <Header
@@ -17,7 +18,7 @@ const HeaderComponent = () => {
         placement="center"
     
         leftComponent={<LeftComponent />}
-        centerComponent={{ text: "Welcome hairdresser", style: { color: "#86C232",fontFamily:"sans-serif-medium",fontSize:18 } }}
+        centerComponent={{ text: props.text, style: { color: "#86C232",fontFamily:"sans-serif-medium",fontSize:18 } }}
         rightComponent={<RightComponent />}
       />
     </React.Fragment>

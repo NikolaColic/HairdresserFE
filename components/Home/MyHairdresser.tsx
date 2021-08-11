@@ -4,20 +4,29 @@ import { Chip } from "react-native-elements/dist/buttons/Chip";
 import { Card, Button,Avatar } from "react-native-paper";
 
 import Carousel from "react-native-snap-carousel";
+import { Reservation } from "../../model/Reservation";
+import { User } from "../../model/User";
 import HeaderComponent from "../Header/HeaderComponent";
 
 interface ItemProps {
   title: string;
   text: string;
+ //ovde treba da ide sada Reservation
+  
 }
 
-interface CustomCarouselProps {}
+interface CustomCarouselProps {
+  DeleteReservation : (reservation : Reservation) => void;
+  user : User | null;
+  text2 : string;
+}
 interface RenderItemProps {
   item: ItemProps;
   index: number;
 }
 
 const exampleItems = [
+  //Ovde u useeffect treba reservations da se podesi
   {
     title: "Item 1",
     text: "Text 1",
@@ -53,7 +62,7 @@ const MyHairdresser: React.SFC<CustomCarouselProps> = () => {
 
   return (
     <React.Fragment>
-        <HeaderComponent />
+        <HeaderComponent text = "nik" />
         <SafeAreaView
         style={{ flex: 1, backgroundColor: "#222629", flexDirection: "column", flexWrap:"wrap"}} >
         <View style = {{flex: 0.1, flexDirection:"row",marginTop:"5%",flexWrap: "wrap", marginLeft:"5%"}}>

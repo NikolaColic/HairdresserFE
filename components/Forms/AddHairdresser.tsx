@@ -8,24 +8,73 @@ import AddHairdresserOne from "./AddHairdresserTree/AddHairdresserOne";
 import AddHairdresserTwo from "./AddHairdresserTree/AddHairdresserTwo";
 import AddHairdresserThree from "./AddHairdresserTree/AddHairdresserThree";
 import AddHairdresserFour from "./AddHairdresserTree/AddHairdresserFour";
+import { Hairdresser } from "../../model/Hairdresser";
+import { User } from "../../model/User";
+import { Municipality } from "../../model/Municipality";
 
-const AddHairdresser = () => {
+
+interface Props  {
+  AddHairdresser : (hairdresser : Hairdresser) => void;
+  users : User[];
+  text : string;
+  municipalities : Municipality[];
+}
+
+const AddHairdresser = (props : Props) => {
     let [step, setStep] = React.useState<number>(0);
+  //One
+  const [name, setName] = React.useState<string> ("");
+  const [taxId, setTaxId] = React.useState<string> ("");
+  const [parentId, setParentId] = React.useState<string> ("");
+  const [adress, setAdress] = React.useState<string> ("");
+  //Two
+  const [email, setEmail] = React.useState<string> ("");
+  const [number, setNumber] = React.useState<string> ("");
+  const [website, setWebsite] = React.useState<string> ("");
+  const [instagram, setInstagram] = React.useState<string> ("");
+  const [facebook, setFacebook] = React.useState<string> ("");
+  //Four
+  const [description, setDescription] = React.useState<string> ("");
+  const [pricelist, setPricelist] = React.useState<string> ("");
+
+  //Three
+  const [value2, setValue2] = React.useState<string | null> (null);
+  const [municipality, setMunicipality] = React.useState<string> ("");
+  const [gender, setGender] = React.useState<number> (0);
+  
+  const OnSubmit = ()=>{
+    //opstina
+    //socialnetworks
+    //validacija 
+
+  }
+  const OnNextStep = () =>{
+    //ovde se validira sada za taj step u zavisnosti od numbera (i ako je okej moze preci na sledeci);
+    setStep((p) => p + 1)
+  }
 
   let [value, setValue] = React.useState<boolean>(true);
-    const content = [<AddHairdresserOne />, <AddHairdresserTwo />,<AddHairdresserThree />,<AddHairdresserFour />]
+    const content = [<AddHairdresserOne 
+    name = {name} setName = {setName} adress = {adress} parentId = {parentId} setAdress = {setAdress} setParentId ={setParentId} setTaxId = {setTaxId}
+    taxId ={taxId}
+    />, <AddHairdresserTwo 
+    email ={email} facebook ={facebook} instagram = {instagram} number = {number} setEmail = {setEmail} setFacebook ={setFacebook} setInstagram = {setInstagram}
+    setNumber = {setNumber} setWebsite = {setWebsite} website = {website}
+    />,<AddHairdresserThree 
+    gender = {gender} municipality = {municipality} setGender = {setGender} setMunicipality = {setMunicipality} setValue = {setValue2} users ={props.users} value ={value2}
+    />,<AddHairdresserFour description ={description} setDescription ={setDescription} pricelist = {pricelist} setPricelist ={setPricelist} />]
 
   return (
     <React.Fragment>
-      <HeaderComponent  />
+      <HeaderComponent text = {props.text} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "#222629", flexDirection: "column" }} >
       <Stepper
           active={step}
           
           content={content}
-          onNext={() => setStep((p) => p + 1)}
+          onNext={() => OnNextStep()}
           onBack={() => setStep((p) => p - 1)}
-          onFinish={()=> console.log("ajmo mi")}
+          onFinish={()=> OnSubmit()}
           wrapperStyle={styles.wrappper}
           stepStyle={styles.stepStyle}
           showButton={value}

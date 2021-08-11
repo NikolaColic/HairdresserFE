@@ -5,7 +5,7 @@ import { Reservation } from "../model/Reservation";
 import { SocialNetwork } from "../model/SocialNetwork";
 import { User } from "../model/User";
 
-const baseUrl = "https://localhost:44314/swagger/";
+const baseUrl = "https://127.0.0.1:44314/"; 
 
 //FavouriteHairdresser
 
@@ -73,9 +73,19 @@ export async function GetSocialNetworks() : Promise<SocialNetwork[]> {
 //User
 
 export const UserAPI = {
-    GetUsers, GetUserById, PostUserAPI, PutUserAPI, DeleteUserAPI
+    GetUsers, GetUserById, PostUserAPI, PutUserAPI, DeleteUserAPI, Authentification
 }
-
+export async function Authentification(user : User) : Promise<User> {
+  const res = await fetch(baseUrl + `/hair/v1/users/authentification`, {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  const userResult = await res.json();
+  return userResult;
+}
 
 export async function GetUsers() : Promise<User[]> {
     const res = await fetch(baseUrl + `/hair/v1/users`, {
@@ -201,11 +211,9 @@ export const HairdresserAPI = {
 
 
 export async function GetHairdressers() : Promise<Hairdresser[]> {
-    const res = await fetch(baseUrl + `/hair/v1/hairdresser`, {
+    const res = await fetch(baseUrl + `api/v1/hairdresser/GetAll`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+       
       });
     var list = await res.json();
     return list;

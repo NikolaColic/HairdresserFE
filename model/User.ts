@@ -1,10 +1,12 @@
 import { Reservation } from "./Reservation";
 import { FavouriteHairdresser } from "./FavouriteHairdresser";
+import { Hairdresser } from "./Hairdresser";
 
 
 export class User {
     userId : number;
     name : string; 
+    surname : string;
     username : string; 
     email : string; 
     date : Date; 
@@ -13,8 +15,9 @@ export class User {
     imageUrl : string;
     reservationsHistory : Reservation[]; 
     favouritesHairdresser : FavouriteHairdresser[];
-    constructor(userId : number,name : string,username : string,email : string,date : Date, number : string,password : string,
-        imageUrl : string, reservationsHistory : Reservation[], favouritesHairdresser : FavouriteHairdresser[])
+    hairdressersOwner : Hairdresser[];
+    constructor(userId : number,name : string,surname : string,username : string,email : string,date : Date, number : string,password : string,
+        imageUrl : string, reservationsHistory : Reservation[], favouritesHairdresser : FavouriteHairdresser[],hairdressersOwner : Hairdresser[])
     {
         this.userId = userId; 
         this.name = name; 
@@ -26,5 +29,8 @@ export class User {
         this.imageUrl = imageUrl;
         this.reservationsHistory = reservationsHistory;
         this.favouritesHairdresser = favouritesHairdresser;
+        this.hairdressersOwner = hairdressersOwner;
+        this.surname = surname;
     }
+    
 }

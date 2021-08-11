@@ -3,9 +3,62 @@ import React from 'react';
 import { View,Text,ScrollView } from 'react-native';
 import { ListItem, Button, Icon } from 'react-native-elements';
 import { useNavigation} from '@react-navigation/native';
+import { Hairdresser } from '../../model/Hairdresser';
+import { User } from '../../model/User';
 
-const HomeFeedList = () =>{
-   const list : number[] = [1,2,3,4,5,6,7,8,8,2,2,2,2,2,2,2,2,2]
+interface Props  {
+  AddFavouriteApi : (hairdresser : Hairdresser) => void;
+  DeleteFavouriteApi : (hairdresser : Hairdresser) => void;
+  hairdressers : Hairdresser[];
+  user : User | null;
+}
+
+const HomeFeedList = (props : Props) =>{
+  const HandleCreateDetail = (isCreate : boolean) =>{
+    if(isCreate){
+      if(props.user === null){
+        //snackbar da mora login
+      }else{
+        navigation.navigate('Create reservation')
+      }
+    }else{
+      if(props.user === null){
+        //snackbar da mora login
+      }else{
+        navigation.navigate('Hairdresser one')
+      }
+    }
+  }
+  const HandleFavouriteIcon = (el : Hairdresser) =>{
+    if(props.user !==  null){
+      if(props.user.favouritesHairdresser !==  null && props.user.favouritesHairdresser.length > 0){
+        if(props.user.favouritesHairdresser.find((e)=> e.hairdresser.hairdresserId === el.hairdresserId) !== undefined){
+          return true;
+        }else{
+          return false;
+        }
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+  }
+
+  const HandleFavourite = (el : Hairdresser) =>{
+    if(props.user !==  null){
+      if(props.user.favouritesHairdresser !==  null && props.user.favouritesHairdresser.length > 0){
+        if(props.user.favouritesHairdresser.find((e)=> e.hairdresser.hairdresserId === el.hairdresserId) !== undefined){
+          props.DeleteFavouriteApi(el);
+        }else{
+          props.AddFavouriteApi(el);
+        }
+      }else{
+        props.AddFavouriteApi(el);
+      }
+    }
+  }
+
   const navigation = useNavigation();
     return (
       <View style = {{flex:1}}>
@@ -13,9 +66,9 @@ const HomeFeedList = () =>{
       scrollEnabled
       keyboardDismissMode = "on-drag"
       >
-              {
-                list.map((el)=> (
-                  <React.Fragment>
+             
+                {  props.hairdressers !== undefined ? props.hairdressers.map((el)=> (
+                  <React.Fragment key = {el.hairdresserId}>
 
             <ListItem.Swipeable
             
@@ -25,7 +78,7 @@ const HomeFeedList = () =>{
                 title="Details"
                 icon={{ name: 'information-outline', color: 'white',type : "material-community" }}
                 buttonStyle={{ minHeight: '100%',backgroundColor: '#6B6E70' }}
-                onPress = {() => navigation.navigate('Hairdresser one')} 
+                onPress = {() => HandleCreateDetail(false)} 
 
               />
             }
@@ -34,19 +87,19 @@ const HomeFeedList = () =>{
                 title="Reservation"
                 icon={{ name: 'plus-circle-outline', color: 'white',type : "material-community" }}
                 buttonStyle={{ minHeight: '100%', backgroundColor: '#61892F'}}
-                onPress = {() => navigation.navigate('Create reservation')} 
+                onPress = {() => HandleCreateDetail(true)} 
               />
             }>
-            <Icon name="heart-outline"  type ="material-community" color ="#61892F" size = {25} />
+            <Icon name={HandleFavouriteIcon(el) ? "heart" : "heart-outline"} onPress ={()=> HandleFavourite(el)} type ="material-community" color ="#61892F" size = {25} />
             <ListItem.Content >
-              <ListItem.Title style = {{color:"#86C232",fontFamily: "sans-serif-medium"}}>Hello Swiper</ListItem.Title>
-              <ListItem.Subtitle style = {{color:"#6B6E70",fontFamily: "sans-serif-medium"}}>Naselje Mose Pijade 32</ListItem.Subtitle>
+              <ListItem.Title style = {{color:"#86C232",fontFamily: "sans-serif-medium"}}>{el.name}</ListItem.Title>
+              <ListItem.Subtitle style = {{color:"#6B6E70",fontFamily: "sans-serif-medium"}}>{el.adress}</ListItem.Subtitle>
               
             </ListItem.Content>
-            <ListItem.Chevron color = "#61892F" size = {30}  onPress = {() => navigation.navigate('Hairdresser one')}  />
+            <ListItem.Chevron color = "#61892F" size = {30}  onPress = {() => HandleCreateDetail(false)}  />
           </ListItem.Swipeable>
                   </React.Fragment>
-                ))
+                )) : ("")
               }
         </ScrollView>
             </View>

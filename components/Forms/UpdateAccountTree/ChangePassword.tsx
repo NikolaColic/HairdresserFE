@@ -7,38 +7,31 @@ import { useNavigation} from '@react-navigation/native';
 import HeaderComponent from '../../Header/HeaderComponent';
 import { Input } from 'react-native-elements/dist/input/Input';
 import { Chip } from 'react-native-elements/dist/buttons/Chip';
+import { User } from '../../../model/User';
 
+interface Props  {
+    UpdateAccount : (user : User, isChange : boolean) => void;
+    user : User;
+    text : string;
+}
 
-
-const ChangePassword = () =>{
-    const [username, setUsername] = React.useState<string> ("");
-    const [text, setText] = React.useState<string> ("");
+const ChangePassword = (props : Props) =>{
     const [password, setPassword] = React.useState<string> ("");
+    const [password1, setPassword1] = React.useState<string> ("");
     const [passVisible, setPassVisible] = React.useState<boolean> (true);
-    const [visible, setVisible] = React.useState<boolean> (false);
     const [passVisible1, setPassVisible1] = React.useState<boolean> (false);
     const navigation = useNavigation();
-    const SetValues = () => {
-        if(username == "miljana"){
-            setVisible(true);
-            setText("Cao gospodjice Miljana")
+   
+    const ChangePassword = () =>{
+        if(password !== password1){
+            return;
         }
-        if(username == "rad"){
-            setVisible(true);
-            setText("Hteo sam da te pitam sta radis?")
-        }
-        if(username == "zlatibor"){
-            setVisible(true);
-            setText("Kakvi su ti krajnji utisci sa radionica?")
-        }
-        if(username == "projekat"){
-            setVisible(true);
-            setText("btw ovo za master pravim neku apl :) ")
-        }
+        props.user.password= password;
+        props.UpdateAccount(props.user,true);
     }
     return (
         <React.Fragment>
-        <HeaderComponent />
+        <HeaderComponent text = {props.text} />
 
             <View style = {{flex: 1, backgroundColor: "#222629",flexDirection:"column"}}> 
                 <View style = {{flex: 0.3, alignItems: "center", justifyContent: "center"}}>
@@ -55,8 +48,8 @@ const ChangePassword = () =>{
         labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
-        value = {username}
-        onChangeText = {(username) => setUsername(username)}
+        value = {password}
+        onChangeText = {(password) => setPassword(password)}
         rightIcon={
             <Icon
             name = "eye" type ="material-community"
@@ -73,8 +66,8 @@ const ChangePassword = () =>{
         labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
-        value = {password}
-        onChangeText = {(password) => setPassword(password)}
+        value = {password1}
+        onChangeText = {(password1) => setPassword1(password1)}
         rightIcon={
             <Icon
             name = "eye" type ="material-community"
@@ -84,10 +77,11 @@ const ChangePassword = () =>{
             />}
         /> 
                     <Chip
-                title="SIGN IN"
+                title="CHANGE PASSWORD"
                 containerStyle = {{width:"89%", marginLeft:"6%"}}
                 buttonStyle = {{height:"40%",alignContent:"center",backgroundColor:"#61892F"}}
                 titleStyle = {{fontSize:20, letterSpacing:3,fontFamily:"sans-serif-medium"}}
+                onPress = {()=> ChangePassword()}
             />
 
                 </View>
@@ -96,19 +90,7 @@ const ChangePassword = () =>{
                     <Text style = {{color:"#86C232"}} onPress = {()=> navigation.navigate('Edit profile')}>Click here</Text></Text>
                 </View>
             </View>
-            <Snackbar
-            visible = {visible}
-            onDismiss = {() => setVisible(false)}
-            duration = {5000}
-            action={{
-                label: 'X',
-                onPress: () => {
-                  setVisible(false)
-                },
-              }}>
-            
-                {text}
-            </Snackbar>
+         
         </React.Fragment>
     );
 }

@@ -5,7 +5,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { Input } from "react-native-elements/dist/input/Input";
 
-const AddHairdresserFour = () => {
+interface Props {
+  description : string 
+  setDescription: (email : string) => void;
+  pricelist : string;
+  setPricelist: (number : string) => void;
+
+}
+
+const AddHairdresserFour = (props : Props) => {
    
   return (
     <React.Fragment>
@@ -30,6 +38,8 @@ const AddHairdresserFour = () => {
         placeholder='Enter description..' 
         placeholderTextColor = "#474B4F"
         multiline
+        value = {props.description}
+        onChangeText = {(text)=> props.setDescription(text)}
         maxLength = {500}
         numberOfLines = {7}
         label = "Description"
@@ -49,6 +59,8 @@ const AddHairdresserFour = () => {
         placeholderTextColor = "#474B4F"
         label = "Pricelist"
         multiline
+        value = {props.pricelist}
+        onChangeText = {(text)=> props.setPricelist(text)}
         maxLength = {500}
         numberOfLines = {7}
         labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}

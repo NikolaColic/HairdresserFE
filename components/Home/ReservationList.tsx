@@ -4,57 +4,54 @@ import { Chip } from "react-native-elements/dist/buttons/Chip";
 import { Card, Button,Avatar } from "react-native-paper";
 
 import Carousel from "react-native-snap-carousel";
+import { Reservation } from "../../model/Reservation";
+import { User } from "../../model/User";
 import HeaderComponent from "../Header/HeaderComponent";
 
 //DODATI I SHARE DUGME
 interface ItemProps {
-  title: string;
-  text: string;
+  reservation : Reservation;
 }
 
-interface CustomCarouselProps {}
+interface CustomCarouselProps {
+  DeleteReservation : (reservation : Reservation) => void;
+  user : User | null;
+  text2 : string;
+
+}
+
 interface RenderItemProps {
   item: ItemProps;
   index: number;
 }
 
 const exampleItems = [
-  {
-    title: "Item 1",
-    text: "Text 1",
-  },
-  {
-    title: "Item 2",
-    text: "Text 2",
-  },
-  {
-    title: "Item 3",
-    text: "Text 3",
-  },
-  {
-    title: "Item 4",
-    text: "Text 4",
-  },
-  {
-    title: "Item 5",
-    text: "Text 5",
-  },
 ];
 
-const ReservationList: React.SFC<CustomCarouselProps> = () => {
+const ReservationList = (props : CustomCarouselProps) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [carouselItems, setCarouselItems] = useState<ItemProps[]>(exampleItems);
-  const ref = useRef(null);
+  const [carouselItems, setCarouselItems] = useState<ItemProps[]>([]);
 
+  const ref = useRef(null);
+  React.useEffect(()=>{
+    var itemProps : ItemProps[] = [];
+    if(props.user !== null && props.user.reservationsHistory !== null){
+      props.user.reservationsHistory.map((el)=> {
+        var itemProp : ItemProps = {reservation: el};
+        itemProps.push(itemProp);
+      });
+      setCarouselItems(itemProps);
+    }
+  },[])
   const renderItem = useCallback(({ item, index }: RenderItemProps) => {
     return (
-      <ReservationListCard />
+      <ReservationListCard  reservation = {item.reservation} DeleteReservation ={props.DeleteReservation}/>
     );
   }, []);
 
   return (
     <React.Fragment>
-        <HeaderComponent />
+        <HeaderComponent text = {props.text2} />
         <SafeAreaView
         style={{ flex: 1, backgroundColor: "#222629", flexDirection: "column", flexWrap:"wrap"}} >
         <View style = {{flex: 0.1, flexDirection:"row",marginTop:"5%",flexWrap: "wrap", marginLeft:"5%"}}>
@@ -112,22 +109,25 @@ const ReservationList: React.SFC<CustomCarouselProps> = () => {
 };
 
 const LeftContent = (props : any) => <Avatar.Text {...props} style = {{backgroundColor:"#222629"}} label = "A" />
-const ReservationListCard = () =>{
+interface PropsListCard {
+  reservation : Reservation;
+  DeleteReservation: (res : Reservation) => void;
+}
+const ReservationListCard = (props : PropsListCard) =>{
     return (
         <React.Fragment>
             <Card style = {{backgroundColor:"#474B4F", borderWidth:1, borderColor:"#61892F",opacity:1,borderRadius:20, marginRight:"-3%"}}>
                 <Card.Title titleStyle ={{color:"#86C232",fontSize:20, letterSpacing:2.5, fontFamily: "sans-serif-medium"}} 
-                subtitleStyle ={{color:"white",fontSize:14}} title="Irea frizerski salon" subtitle="Naselje mose pijade, 0642125720" left={LeftContent} />
+                subtitleStyle ={{color:"white",fontSize:14}} title={props.reservation.hairdresser.name} subtitle={props.reservation.hairdresser.adress + ", " + props.reservation.hairdresser.number} left={LeftContent} />
                 <Card.Content>
-                <Text style = {{fontSize:20,color:"white",fontFamily: "sans-serif-medium"}}><Text style = {{color:"#86C232"}}>Datum:</Text> 06/10/2020 15:49 </Text>
+                <Text style = {{fontSize:20,color:"white",fontFamily: "sans-serif-medium"}}><Text style = {{color:"#86C232"}}>Datum:</Text> {props.reservation.time} </Text>
                 <Text style = {{fontSize:20,color:"white",fontFamily: "sans-serif-medium"}}><Text style = {{color:"#86C232"}}>Status:</Text> Aktivan </Text>
                 <Text style = {{color:"#86C232",fontSize:20,fontFamily: "sans-serif-medium"}}>Opis:</Text>
-                <Text style = {{fontSize:20, textAlign:"justify",color:"white",fontFamily: "sans-serif-medium"}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus 
-                    cum voluptas soluta quidem pariatur optio dolore eligendi 
-                    voluptates quibusdam sequi fugit nulla iure ipsum exercitationem, dicta assumenda porro doloribus asperiores?</Text>
+                <Text style = {{fontSize:20, textAlign:"justify",color:"white",fontFamily: "sans-serif-medium"}}>
+                   {props.reservation.description}
+                </Text>
                 </Card.Content>
                 <Card.Actions style = {{marginBottom:"3%"}}>
-                <Button style = {{backgroundColor:"#61892F",width:"30%", marginLeft: "67%"}}> <Text style = {{color:"white"}}>Share</Text></Button>
 
                 <Button style = {{backgroundColor:"#61892F",width:"30%", marginLeft: "67%"}}> <Text style = {{color:"white"}}>Delete</Text></Button>
                 </Card.Actions>
