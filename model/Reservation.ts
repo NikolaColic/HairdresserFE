@@ -8,10 +8,10 @@ export class Reservation {
     time : Date;
     description : string; 
     note : string; 
-    mark : string;
+    mark : number;
     
     constructor(reservationId : number, hairdresser : Hairdresser, user : User, time : Date, description : string, note : string, 
-        mark : string)
+        mark : number)
     {
         this.reservationId = reservationId; 
         this.hairdresser = hairdresser; 

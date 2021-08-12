@@ -9,11 +9,12 @@ import { User } from '../../model/User';
 interface Props  {
   AddFavouriteApi : (hairdresser : Hairdresser) => void;
   DeleteFavouriteApi : (hairdresser : Hairdresser) => void;
-  hairdressers : Hairdresser[];
+  hairdressers : Hairdresser[] | undefined;
   user : User | null;
 }
 
 const HomeFeedList = (props : Props) =>{
+  
   const HandleCreateDetail = (isCreate : boolean) =>{
     if(isCreate){
       if(props.user === null){
@@ -66,10 +67,10 @@ const HomeFeedList = (props : Props) =>{
       scrollEnabled
       keyboardDismissMode = "on-drag"
       >
-             
-                {  props.hairdressers !== undefined ? props.hairdressers.map((el)=> (
+             {console.log("Nikola " + props.hairdressers
+             )}
+                { props.hairdressers?.map((el)=> (
                   <React.Fragment key = {el.hairdresserId}>
-
             <ListItem.Swipeable
             
             containerStyle = {{backgroundColor:"#222629",borderBottomColor:"#474B4F",borderBottomEndRadius:5}}
@@ -99,7 +100,7 @@ const HomeFeedList = (props : Props) =>{
             <ListItem.Chevron color = "#61892F" size = {30}  onPress = {() => HandleCreateDetail(false)}  />
           </ListItem.Swipeable>
                   </React.Fragment>
-                )) : ("")
+                )) 
               }
         </ScrollView>
             </View>

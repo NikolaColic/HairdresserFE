@@ -13,11 +13,12 @@ export class User {
     number : string; 
     password : string; 
     imageUrl : string;
+    isAdministrator : boolean;
     reservationsHistory : Reservation[]; 
     favouritesHairdresser : FavouriteHairdresser[];
     hairdressersOwner : Hairdresser[];
     constructor(userId : number,name : string,surname : string,username : string,email : string,date : Date, number : string,password : string,
-        imageUrl : string, reservationsHistory : Reservation[], favouritesHairdresser : FavouriteHairdresser[],hairdressersOwner : Hairdresser[])
+        imageUrl : string, reservationsHistory : Reservation[], favouritesHairdresser : FavouriteHairdresser[],hairdressersOwner : Hairdresser[],isAdministrator : boolean)
     {
         this.userId = userId; 
         this.name = name; 
@@ -31,6 +32,7 @@ export class User {
         this.favouritesHairdresser = favouritesHairdresser;
         this.hairdressersOwner = hairdressersOwner;
         this.surname = surname;
+        this.isAdministrator = isAdministrator;
     }
     
 }

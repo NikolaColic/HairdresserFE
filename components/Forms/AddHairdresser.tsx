@@ -11,6 +11,8 @@ import AddHairdresserFour from "./AddHairdresserTree/AddHairdresserFour";
 import { Hairdresser } from "../../model/Hairdresser";
 import { User } from "../../model/User";
 import { Municipality } from "../../model/Municipality";
+import { SocialNetwork } from "../../model/SocialNetwork";
+import { SocialHairdresser } from "../../model/SocialHairdresser";
 
 
 interface Props  {
@@ -18,6 +20,7 @@ interface Props  {
   users : User[];
   text : string;
   municipalities : Municipality[];
+  socialNetworks : SocialNetwork[];
 }
 
 const AddHairdresser = (props : Props) => {
@@ -43,9 +46,45 @@ const AddHairdresser = (props : Props) => {
   const [gender, setGender] = React.useState<number> (0);
   
   const OnSubmit = ()=>{
-    //opstina
-    //socialnetworks
-    //validacija 
+    const municipalityFind = props.municipalities.find((el)=> el.name.toLowerCase().includes(municipality.toLowerCase()));
+    if(municipalityFind === undefined){
+      //poruka
+      return;
+    }
+    if(value2 === null){
+      //po
+      return;
+    }
+    const userFind = props.users.find((el)=> el.username.toLowerCase().includes(value2.toLowerCase()));
+    if(userFind === undefined){
+      //poruka
+      return;
+    }
+    const socialNetworks = SetSocialNetworks();
+    alert(adress);
+    const hairdresser = new Hairdresser(0,name,adress,taxId,parentId,number,email,website,description,pricelist,gender,municipalityFind,userFind,[],[],socialNetworks);
+
+    props.AddHairdresser(hairdresser);
+
+  }
+
+  const SetSocialNetworks = ()=>{
+    var list : SocialHairdresser[] = [];
+    if(facebook !== ""){
+      const findSocial = props.socialNetworks.find((el)=> el.name.toLowerCase() === "facebook"); 
+      if(findSocial !== undefined){
+
+        list.push(new SocialHairdresser(0,{} as Hairdresser, findSocial, facebook));
+      }
+    }
+    if(instagram !== ""){
+      const findSocial = props.socialNetworks.find((el)=> el.name.toLowerCase() === "instagram"); 
+      if(findSocial !== undefined){
+
+        list.push(new SocialHairdresser(0,{} as Hairdresser, findSocial, instagram));
+      }
+    }
+    return list;
 
   }
   const OnNextStep = () =>{

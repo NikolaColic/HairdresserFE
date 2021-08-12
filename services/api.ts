@@ -5,16 +5,16 @@ import { Reservation } from "../model/Reservation";
 import { SocialNetwork } from "../model/SocialNetwork";
 import { User } from "../model/User";
 
-const baseUrl = "https://127.0.0.1:44314/"; 
-
+const baseUrl = "http://107b4bf2c37d.ngrok.io/"; 
+ 
 //FavouriteHairdresser
 
 export const FavouriteHairdresserAPI = {
-    PostFavouriteHairdresserAPI, DeleteFavouriteHairdresserAPI
+    PostFavouriteHairdresserAPI, DeleteFavouriteHairdresserAPI 
 }
-
+ 
 export async function PostFavouriteHairdresserAPI(favouriteHairdresser : FavouriteHairdresser) {
-    const res = await fetch(baseUrl + `/hair/v1/favourite`, {
+    const res = await fetch(baseUrl + `hair/v1/favourite`, {
         method: "POST",
         body: JSON.stringify(favouriteHairdresser),
         headers: {
@@ -25,7 +25,7 @@ export async function PostFavouriteHairdresserAPI(favouriteHairdresser : Favouri
 }
 
 export async function DeleteFavouriteHairdresserAPI(id : number) {
-    const res = await fetch(baseUrl + `/hair/v1/favourite/${id}`, {
+    const res = await fetch(baseUrl + `hair/v1/favourite/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +42,7 @@ export const MunicipalityAPI = {
 }
 
 export async function GetMunicipalities() : Promise<Municipality[]> {
-    const res = await fetch(baseUrl + `/hair/v1/municipality`, {
+    const res = await fetch(baseUrl + `hair/v1/municipality/GetAll`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export const SocialNetworkAPI = {
 }
 
 export async function GetSocialNetworks() : Promise<SocialNetwork[]> {
-    const res = await fetch(baseUrl + `/hair/v1/socialnetworks`, {
+    const res = await fetch(baseUrl + `hair/v1/socialnetworks/GetAll`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export const UserAPI = {
     GetUsers, GetUserById, PostUserAPI, PutUserAPI, DeleteUserAPI, Authentification
 }
 export async function Authentification(user : User) : Promise<User> {
-  const res = await fetch(baseUrl + `/hair/v1/users/authentification`, {
+  const res = await fetch(baseUrl + `hair/v1/users/authentification`, {
       method: "POST",
       body: JSON.stringify(user),
       headers: {
@@ -88,7 +88,7 @@ export async function Authentification(user : User) : Promise<User> {
 }
 
 export async function GetUsers() : Promise<User[]> {
-    const res = await fetch(baseUrl + `/hair/v1/users`, {
+    const res = await fetch(baseUrl + `hair/v1/users/GetAll`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ export async function GetUsers() : Promise<User[]> {
 }
 
 export async function GetUserById(id : number) : Promise<User> {
-    const res = await fetch(baseUrl + `/hair/v1/users/${id}`, {
+    const res = await fetch(baseUrl + `hair/v1/users/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +110,7 @@ export async function GetUserById(id : number) : Promise<User> {
 }
 
 export async function PostUserAPI(user : User) {
-    const res = await fetch(baseUrl + `/hair/v1/users`, {
+    const res = await fetch(baseUrl + `hair/v1/users`, {
         method: "POST",
         body: JSON.stringify(user),
         headers: {
@@ -121,7 +121,7 @@ export async function PostUserAPI(user : User) {
 }
 
 export async function PutUserAPI(user : User) {
-    const res = await fetch(baseUrl + `/hair/v1/users/${user.userId}`, {
+    const res = await fetch(baseUrl + `hair/v1/users/${user.userId}`, {
         method: "PUT",
         body: JSON.stringify(user),
         headers: {
@@ -132,7 +132,7 @@ export async function PutUserAPI(user : User) {
 }
 
 export async function DeleteUserAPI(id : number) {
-    const res = await fetch(baseUrl + `/hair/v1/users/${id}`, {
+    const res = await fetch(baseUrl + `hair/v1/users/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -150,7 +150,7 @@ export const ReservationsAPI = {
 
 
 export async function GetReservations() : Promise<Reservation[]> {
-    const res = await fetch(baseUrl + `/hair/v1/reservations`, {
+    const res = await fetch(baseUrl + `hair/v1/reservations/GetAll`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -161,7 +161,7 @@ export async function GetReservations() : Promise<Reservation[]> {
 }
 
 export async function GetReservationById(id : number) : Promise<Reservation> {
-    const res = await fetch(baseUrl + `/hair/v1/reservations/${id}`, {
+    const res = await fetch(baseUrl + `hair/v1/reservations/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -172,7 +172,7 @@ export async function GetReservationById(id : number) : Promise<Reservation> {
 }
 
 export async function PostReservationAPI(reservation : Reservation) {
-    const res = await fetch(baseUrl + `/hair/v1/reservations`, {
+    const res = await fetch(baseUrl + `hair/v1/reservations`, {
         method: "POST",
         body: JSON.stringify(reservation),
         headers: {
@@ -183,7 +183,7 @@ export async function PostReservationAPI(reservation : Reservation) {
 }
 
 export async function PutReservationAPI(reservation : Reservation) {
-    const res = await fetch(baseUrl + `/hair/v1/reservations/${reservation.reservationId}`, {
+    const res = await fetch(baseUrl + `hair/v1/reservations/${reservation.reservationId}`, {
         method: "PUT",
         body: JSON.stringify(reservation),
         headers: {
@@ -194,7 +194,7 @@ export async function PutReservationAPI(reservation : Reservation) {
 }
 
 export async function DeleteReservationAPI(id : number) {
-    const res = await fetch(baseUrl + `/hair/v1/reservations/${id}`, {
+    const res = await fetch(baseUrl + `hair/v1/reservations/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -204,7 +204,7 @@ export async function DeleteReservationAPI(id : number) {
 }
 
 //Hairdresser
-
+ 
 export const HairdresserAPI = {
     GetHairdressers, GetHairdresserById, PostHairdresserAPI, PutHairdresserAPI, DeleteHairdresserAPI
 }
@@ -213,14 +213,17 @@ export const HairdresserAPI = {
 export async function GetHairdressers() : Promise<Hairdresser[]> {
     const res = await fetch(baseUrl + `api/v1/hairdresser/GetAll`, {
         method: "GET",
-       
+        headers: {
+          'Accept': 'application/json, text/plain',
+          "Content-Type": "application/json"
+        }
       });
     var list = await res.json();
     return list;
 }
 
 export async function GetHairdresserById(id : number) : Promise<Hairdresser> {
-    const res = await fetch(baseUrl + `/hair/v1/hairdresser/${id}`, {
+    const res = await fetch(baseUrl + `api/v1/hairdresser/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -231,7 +234,7 @@ export async function GetHairdresserById(id : number) : Promise<Hairdresser> {
 }
 
 export async function PostHairdresserAPI(hairdresser : Hairdresser) {
-    const res = await fetch(baseUrl + `/hair/v1/hairdresser`, {
+    const res = await fetch(baseUrl + `api/v1/hairdresser`, {
         method: "POST",
         body: JSON.stringify(hairdresser),
         headers: {
@@ -242,7 +245,7 @@ export async function PostHairdresserAPI(hairdresser : Hairdresser) {
 }
 
 export async function PutHairdresserAPI(hairdresser : Hairdresser) {
-    const res = await fetch(baseUrl + `/hair/v1/hairdresser/${hairdresser.hairdresserId}`, {
+    const res = await fetch(baseUrl + `api/v1/hairdresser/${hairdresser.hairdresserId}`, {
         method: "PUT",
         body: JSON.stringify(hairdresser),
         headers: {
@@ -253,7 +256,7 @@ export async function PutHairdresserAPI(hairdresser : Hairdresser) {
 }
 
 export async function DeleteHairdresserAPI(id : number) {
-    const res = await fetch(baseUrl + `/hair/v1/hairdresser/${id}`, {
+    const res = await fetch(baseUrl + `apo/v1/hairdresser/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

@@ -10,7 +10,7 @@ export class Hairdresser {
     name : string; 
     adress : string; 
     taxId : string; 
-    parentId : Date; 
+    parentId : string; 
     number : string; 
     gmail : string; 
     website : string;
@@ -22,7 +22,7 @@ export class Hairdresser {
     images : HairdresserImage[];
     reservations : Reservation[]; 
     socialNetworks : SocialHairdresser[];
-    constructor(hairdresserId : number, name : string,adress : string, taxId : string,parentId : Date,number : string, gmail : string, 
+    constructor(hairdresserId : number, name : string,adress : string, taxId : string,parentId : string,number : string, gmail : string, 
         website : string, description : string,pricelist : string, gender : number, municipality : Municipality, owner : User,
         images : HairdresserImage[], reservations : Reservation[], socialNetworks : SocialHairdresser[])
     {

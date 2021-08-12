@@ -41,6 +41,8 @@ const AddHairdresserOne = (props : Props) => {
         <Input
         placeholder='Enter name..' 
         placeholderTextColor = "#474B4F"
+        value = {props.name}
+        onChangeText = {(text) => props.setName(text)}
         label = "Name"
         labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
@@ -57,6 +59,8 @@ const AddHairdresserOne = (props : Props) => {
         placeholder='Enter adress..' 
         placeholderTextColor = "#474B4F"
         label = "Adress"
+        value = {props.adress}
+        onChangeText = {(text) => props.setAdress(text)}
         labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
@@ -73,6 +77,8 @@ const AddHairdresserOne = (props : Props) => {
         placeholderTextColor = "#474B4F"
         label = "Tax id"
         keyboardType = "numeric"
+        value = {props.taxId}
+        onChangeText = {(text) => props.setTaxId(text)}
         labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
@@ -88,6 +94,8 @@ const AddHairdresserOne = (props : Props) => {
         placeholder='Enter parent id..' 
         placeholderTextColor = "#474B4F"
         label = "Parent id"
+        value = {props.parentId}
+        onChangeText = {(text) => props.setParentId(text)}
         keyboardType = "numeric"
         labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}

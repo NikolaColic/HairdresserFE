@@ -15,7 +15,7 @@ import { User } from '../../model/User';
 
 interface Props  {
     AddReservationApi : (reservation : Reservation) => void;
-    hairdressers : Hairdresser[];
+    hairdressers : Hairdresser[] | undefined;
     text : string;
 }
 
@@ -32,18 +32,18 @@ const AddReservation = (props : Props) => {
  
 
   const AddReservationApi = () =>{
-      const hairdresser = props.hairdressers.find((el)=> el.name === value);
+      const hairdresser = props.hairdressers?.find((el)=> el.name === value);
       if(date === null){
           return;
       }
       if(hairdresser !== undefined ){
-          var res : Reservation = new Reservation(0, hairdresser, {} as User, date, description, note, "");
+          var res : Reservation = new Reservation(0, hairdresser, {} as User, date, description, note, 1);
           props.AddReservationApi(res);
       }
   }
   React.useEffect(()=>{
     var itemTypes : ItemType[] = [];
-    props.hairdressers.map((el)=>{
+    props.hairdressers?.map((el)=>{
         var itemType : ItemType = {label: el.name, value: el.name}
         itemTypes.push(itemType);
     })

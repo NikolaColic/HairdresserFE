@@ -13,7 +13,7 @@ import { User } from '../../model/User';
 interface Props  {
     AddFavouriteApi : (hairdresser : Hairdresser) => void;
     DeleteFavouriteApi : (hairdresser : Hairdresser) => void;
-    hairdressers : Hairdresser[];
+    hairdressers : Hairdresser[] | undefined;
     text : string;
     user : User | null;
     isHome : boolean;
@@ -22,17 +22,32 @@ interface Props  {
 const HomeFeed = (props : Props) => {
     const [active, setActive] = React.useState<number> (0);
     const [text,setText] = React.useState<string> ("");
-    const [hairdressers, setHairdressers] = React.useState<Hairdresser[]> ([]);
+    const [hairdressers, setHairdressers] = React.useState<Hairdresser[] | undefined> ([]);
+
+    React.useEffect(()=>{
+        setHairdressers(props.hairdressers?.map((el)=> el));
+    },[])
+
+    
     const HandleSearch = (textS : string)=>{
+        const hairdressersSearch = props.hairdressers?.filter((el)=> el.name.toLowerCase().includes(textS.toLowerCase()));
+        setText(textS);
+        if(hairdressersSearch?.length === 0) return;
+        setHairdressers(hairdressersSearch);
 
     }
     const HandleActive = (el : number)=>{
-        
+        if(el === 1){
+            setHairdressers(props.hairdressers?.map((el)=> el));
+        }else if(el ===2){
+
+        }else{
+            const values = hairdressers?.filter((el)=> props.user !== null && props.user.favouritesHairdresser !== null &&
+            props.user.favouritesHairdresser.find((favo)=> favo.hairdresser.hairdresserId === el.hairdresserId) !== undefined);
+            setHairdressers(values);
+        }
     }
-    React.useEffect(()=>{
-        var hair = {...props.hairdressers};
-        setHairdressers(hair);
-    },[])
+   
     return (
         <React.Fragment>
             <HeaderComponent text = {props.text} />
