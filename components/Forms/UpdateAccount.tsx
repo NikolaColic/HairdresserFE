@@ -21,7 +21,6 @@ interface Props  {
 
 const UpdateAccount = (props : Props) => {
     const [name, setName] = React.useState<string> ("");
-    const [surname, setSurname] = React.useState<string> ("");
     const [email, setEmail] = React.useState<string> ("");
     const [mobile, setMobile] = React.useState<string> ("");
     const [username, setUsername] = React.useState<string> ("");
@@ -30,7 +29,7 @@ const UpdateAccount = (props : Props) => {
     const UpdateAccount = ()=>{
       if(props.user !== null){
         props.user.name = name;
-        props.user.surname = surname;
+        props.user.surname = "";
         props.user.email = email;
         props.user.number = mobile;
         props.user.username = username;
@@ -41,7 +40,6 @@ const UpdateAccount = (props : Props) => {
     React.useEffect(()=>{
       if(props.user !== null){
         setName(props.user.name);
-        setSurname(props.user.surname);
         setEmail(props.user.email);
         setMobile(props.user.number);
         setUsername(props.user.username);
@@ -70,23 +68,6 @@ const UpdateAccount = (props : Props) => {
         leftIcon={
             <Icon
             name = "alpha-n-circle-outline" type ="material-community"
-            size={24}
-            color='#61892F'
-            />}
-        /> 
-        <Input
-        placeholder='Enter surname..' 
-        placeholderTextColor = "#474B4F"
-        label = "Surname"
-
-        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
-        inputContainerStyle = {{borderColor: "#474B4F"}}
-        inputStyle = {{color:"white"}}
-        value = {surname}
-        onChangeText = {(surname) => setSurname(surname)}
-        leftIcon={
-            <Icon
-            name = "alpha-s-circle-outline" type ="material-community"
             size={24}
             color='#61892F'
             />}

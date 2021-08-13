@@ -24,6 +24,7 @@ import { Municipality } from './model/Municipality';
 import { FavouriteHairdresserAPI, HairdresserAPI, MunicipalityAPI, ReservationsAPI, SocialNetworkAPI, UserAPI } from './services/api';
 import { FavouriteHairdresser } from './model/FavouriteHairdresser';
 import {Text} from 'react-native';
+import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 const Drawer = createDrawerNavigator();
 
 const  App = () => {
@@ -32,11 +33,21 @@ const  App = () => {
   const [user, setUser] = React.useState<User |  null> (null);
   const [socialNetworks, setSocialNetworsk] = React.useState<SocialNetwork[]> ([]);
   const [municipilities, setMunicipilities] = React.useState<Municipality[]> ([]);
+  const [hairdresserOne, setHairdresserOne] = React.useState<Hairdresser | undefined> (undefined);
   const [text,setText] = React.useState<string | null> (null);
-
+  const [error, setError] = React.useState<boolean> (false);
   const isLoadingComplete = useCachedResources();
   const [number, setNumber] = React.useState<number> (1); 
  
+
+  const HandleDismissSnackbar = ()=>{
+    setText(null);
+    setError(true);
+  }
+  const HandleOpenSnackbar = (textSnackbar : string, signal : boolean)=>{
+    setText(textSnackbar);
+    setError(signal);
+  }
   const DovuciPodatke = async () => {
     try{ 
       const hairdressers = await HairdresserAPI.GetHairdressers();  
@@ -61,12 +72,12 @@ const  App = () => {
   const SignInApi = async (username : string, password : string) =>{
     try{
       var user1 : User= new User(0,"","",username,"", new Date(),"",password, "",[],[],[],false);
-      const res = await UserAPI.Authentification(user1);
-      if(res !== null){
+      const res : any = await UserAPI.Authentification(user1);
+      if(res !==  null){
         if(username === "nikola") res.isAdministrator = true;
         setUser(res);
       }else{
-        setText('Invalid sign in');
+        HandleOpenSnackbar("Invalid sign in", true);
       }
     }catch(e){
       console.log(e);
@@ -75,11 +86,37 @@ const  App = () => {
   }
   const SignUpApi = async (user : User) => {
     try{
+      if(user.name === "" || user.number === "" || user.email === ""){
+        HandleOpenSnackbar("Empty entry!",true);
+        return;
+      }
+      if(!user.email.trim().endsWith("@gmail.com") && !user.email.trim().endsWith("@hotmail.com") && !user.email.trim().endsWith("@outlook.com")
+      && !user.email.trim().endsWith("@fon.bg.ac.rs")){
+        HandleOpenSnackbar("You must entry valid email adress",true);
+        return;
+      }
+      if(user.username.length < 5){
+        HandleOpenSnackbar("Username must have at least 5 charachters",true);
+        return;
+      }
+      if(user.password.length < 5){
+        HandleOpenSnackbar("Pasword must have at least 5 charachters",true);
+        return;
+      }
+      if(users.find((el)=> el.username === user.username) !== undefined){
+        HandleOpenSnackbar("User with same name exist. Please try again",true);
+        return;
+      }
+      if(users.find((el)=> el.email === user.email) !== undefined){
+        HandleOpenSnackbar("User with same email exist. Please try again",true);
+        return;
+      }
+
       const res = await UserAPI.PostUserAPI(user);
       if(res){
-        setText('You have successfully created account');
+        HandleOpenSnackbar("You have successfully created account", false);
       }else{
-        setText('Invalid sign up');
+        HandleOpenSnackbar("Invalid sign up", true);
       }
     }catch(e){
       console.log(e);
@@ -93,12 +130,16 @@ const  App = () => {
       }
       const res = await ReservationsAPI.PostReservationAPI(reservation);
       if(res){
-        user?.reservationsHistory.push(reservation);
-        //nema id iz baze
-        setUser(user);
-        setText('You have successfully created reservation');
+        const hairdressers = await HairdresserAPI.GetHairdressers();
+        setHairdressers(hairdressers);
+        if(user !== null){
+          const user2 = await UserAPI.Authentification(user);
+          setUser(user);
+        }
+
+        HandleOpenSnackbar("You have successfully created reservation", false);
       }else{
-        setText('You dont have successfully created reservation');
+        HandleOpenSnackbar("You dont have successfully created reservation", true);
       }
     }catch(e){
       console.log(e);
@@ -111,10 +152,11 @@ const  App = () => {
         user?.reservationsHistory.filter((reser)=> reser.reservationId !== reservation.reservationId);
         console.log(user);
         setUser(user);
-        setText('You have successfully delete reservation');
+        HandleOpenSnackbar("You have successfully delete reservation", false);
 
       }else{
-        setText('You dont have successfully delete reservation');
+        HandleOpenSnackbar("You dont have successfully delete reservation", true);
+
       }
     }catch(e){
       console.log(e);
@@ -122,13 +164,18 @@ const  App = () => {
   }
   const AddHairdresserApi = async (hairdresser : Hairdresser) => {
     try{
+      if(hairdressers?.find((el)=> el.name.toLowerCase() === hairdresser.name && el.adress.toLowerCase() === hairdresser.adress )){
+        HandleOpenSnackbar("Hairdresser with same name exist", true);
+        return;
+      }
       const res = await HairdresserAPI.PostHairdresserAPI(hairdresser);
       if(res){
-        setText('You have successfully delete reservation');
-        hairdressers?.push(hairdresser);
+        HandleOpenSnackbar("You have successfully create hairdresser", false);
+        const hairdressers = await HairdresserAPI.GetHairdressers();
         setHairdressers(hairdressers);
       }else{
-        setText('You dont have successfully delete reservation');
+        HandleOpenSnackbar("You dont have successfully create hairdresser", true);
+
       }
     }catch(e){
       console.log(e);
@@ -136,14 +183,36 @@ const  App = () => {
   }
   const UpdateAccountApi = async (user : User, isChange : boolean) => {
     try{
-      alert(user.name);  
+      if(!isChange){
+        if(user.name === "" || user.number === "" || user.email === ""){
+          HandleOpenSnackbar("Empty entry!",true);
+          return;
+        }
+        if(user.username.length < 5){
+          HandleOpenSnackbar("Username must have at least 5 charachters",true);
+          return;
+        }
+        if(user.password.length < 5){
+          HandleOpenSnackbar("Pasword must have at least 5 charachters",true);
+          return;
+        }
+        if(users.find((el)=> el.username === user.username && el.userId != user.userId) !== undefined){
+          HandleOpenSnackbar("User with same name exist. Please try again",true);
+          return;
+        }
+        if(users.find((el)=> el.email === user.email !== undefined && el.userId != user.userId)){
+          HandleOpenSnackbar("User with same email exist. Please try again",true);
+          return;
+        }
+  
+      }
       const res = await UserAPI.PutUserAPI(user);
       if(res){
+        HandleOpenSnackbar(isChange ? 'You have successfully change password': 'You have successfully update account', false);
         
-        setText(isChange ? 'You have successfully change password': 'You have successfully update account');
         setUser(user);
       }else{
-        setText(isChange ? 'You dont have successfully change password': 'You dont have successfully update account');
+        HandleOpenSnackbar(isChange ? 'You dont have successfully change password': 'You dont have successfully update account', true);
       }
     }catch(e){
       console.log(e);
@@ -161,12 +230,12 @@ const  App = () => {
       }
       const res = await FavouriteHairdresserAPI.PostFavouriteHairdresserAPI(favourite);
       if(res){
+        HandleOpenSnackbar('You have successfully add favourite hairdresser', false);
         
-        setText('You have successfully add favourite hairdresser');
         user?.favouritesHairdresser.push(favourite);
         setUser(user);
       }else{
-        setText('You dont have successfully add favourite hairdresser');
+        HandleOpenSnackbar('You dont have successfully add favourite hairdresser', true);
       }
     }catch(e){
       console.log(e);
@@ -178,12 +247,11 @@ const  App = () => {
       if(favourite !== undefined){
         const res = await FavouriteHairdresserAPI.DeleteFavouriteHairdresserAPI(favourite?.favouriteHairdresserId);
         if(res){
-          
-          setText('You have successfully add favourite hairdresser');
+          HandleOpenSnackbar('You have successfully add favourite hairdresser', false);
           user?.favouritesHairdresser.filter((el) => el.hairdresser.hairdresserId !== hairdresser.hairdresserId);
           setUser(user);
         }else{
-          setText('You dont have successfully add favourite hairdresser');
+          HandleOpenSnackbar('You dont have successfully add favourite hairdresser', true);
         }
 
       }
@@ -199,20 +267,25 @@ const  App = () => {
     return (
       <NavigationContainer> 
         <Snackbar
-            visible = {text !== null}
-            onDismiss = {() => setText(null)}
-            duration = {5000}
+            visible = {text != null}
+            onDismiss = {() => HandleDismissSnackbar()}
+            style = {error ? {backgroundColor:"#C3073F", width:"85%",marginLeft:"7%",borderColor:"#222629",borderRadius:7}
+          : {backgroundColor:"#61892F", width:"85%",marginLeft:"7%",borderColor:"#222629",borderRadius:7}
+          }
+            duration = {3000}
             action={{
-                label: 'X',
+                label: "X",
                 onPress: () => {
-                  setText(null)
+                  HandleDismissSnackbar()
                 },
               }}>
-            
+            <Text style = {{color:"white", fontSize:18,textAlign:"center"}}>
                 {text}
+
+            </Text>
             </Snackbar>
          {
-           user === null ? (
+           user === null  || user === undefined ? (
              <Drawer.Navigator initialRouteName="Home" 
              drawerType = "front"
              drawerContentOptions ={{activeBackgroundColor : "#6B6E70",activeTintColor:"#86C232", inactiveTintColor: "#6B6E70"
@@ -221,7 +294,7 @@ const  App = () => {
              drawerStyle = {{backgroundColor:"#222629",borderRadius:1,marginVertical: 0,borderRightWidth:0.5,borderRightColor:'#86C232'}} >
                 <Drawer.Screen name="Home" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="home" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={() => <HomeFeed isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
+                component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
                 hairdressers = {hairdressers} text = "Welcome" user = {user}/>}  />  
                 <Drawer.Screen name="Sign In" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="login-variant" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
@@ -241,15 +314,15 @@ const  App = () => {
             drawerStyle = {{backgroundColor:"#222629",borderRadius:1,marginVertical: 0,borderRightWidth:0.5,borderRightColor:'#86C232'}} >
               <Drawer.Screen name="Home" 
                   options ={{drawerIcon:({focused, size}) => ( <Icon name="home" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                  component={() => <HomeFeed isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
+                  component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
                   hairdressers = {hairdressers} text = "Welcome" user = {user}/>} /> 
               <Drawer.Screen name="My reservation" 
                   options ={{drawerIcon:({focused, size}) => ( <Icon name="note-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
                   component={() => <ReservationList user = {user} text2 = {"Reservations"} DeleteReservation = {DeleteReservationApi}/>} />
               <Drawer.Screen name="My favourites" 
                   options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                  component={() => <HomeFeed isHome ={false} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
-                  hairdressers = {user?.favouritesHairdresser.map((el)=> el.hairdresser)} text = "Welcome" user = {user}/>} />
+                  component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={false} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
+                  hairdressers = {user?.favouritesHairdresser?.map((el)=> el.hairdresser)} text = "Welcome" user = {user}/>} />
               <Drawer.Screen name="My hairdressers" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="hair-dryer-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
               component={MyHairdresser} />
@@ -267,9 +340,9 @@ const  App = () => {
               component={() => <ChangePassword user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} />
                 <Drawer.Screen name="Hairdresser one" 
                   options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                  component={HairdresserOne} />
+                  component={(props) => <HairdresserOne {...props} hairdresser = {hairdresserOne} user ={user} text ="Hairdresser detail" />} />
             </Drawer.Navigator>
-           ) : user.hairdressersOwner === null || user.hairdressersOwner.length == 0 ? (
+           ) : user !== undefined && user !== null && (user.hairdressersOwner === null || user.hairdressersOwner?.length == 0) ? (
           <Drawer.Navigator initialRouteName="Home" 
             drawerType = "front"
             drawerContentOptions ={{activeBackgroundColor : "#6B6E70",activeTintColor:"#86C232", inactiveTintColor: "#6B6E70"
@@ -278,15 +351,15 @@ const  App = () => {
             drawerStyle = {{backgroundColor:"#222629",borderRadius:1,marginVertical: 0,borderRightWidth:0.5,borderRightColor:'#86C232'}} >
               <Drawer.Screen name="Home" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="home" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={() => <HomeFeed isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
+                component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
                 hairdressers = {hairdressers} text = "Welcome" user = {user}/>} /> 
               <Drawer.Screen name="My reservation" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="note-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
               component={() => <ReservationList user = {user} text2 = {"Reservations"} DeleteReservation = {DeleteReservationApi}/>} />
               <Drawer.Screen name="My favourites" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <HomeFeed  isHome ={false} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
-              hairdressers = {user?.favouritesHairdresser.map((el)=> el.hairdresser)} text = "Welcome" user = {user}/>} />
+              component={() => <HomeFeed  hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={false} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
+              hairdressers = {user?.favouritesHairdresser?.map((el)=> el.hairdresser)} text = "Welcome" user = {user}/>} />
               <Drawer.Screen name="Create reservation" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
               component={() => <AddReservation text = {"Create reservation"} hairdressers = {hairdressers} AddReservationApi = {AddReservationApi}/>} />
@@ -306,15 +379,15 @@ const  App = () => {
             drawerStyle = {{backgroundColor:"#222629",borderRadius:1,marginVertical: 0,borderRightWidth:0.5,borderRightColor:'#86C232'}} >
             <Drawer.Screen name="Home" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="home" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={() => <HomeFeed isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
+                component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
                 hairdressers = {hairdressers} text = "Welcome" user = {user}/>} /> 
               <Drawer.Screen name="My reservation" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="note-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
               component={() => <ReservationList user = {user} text2 = {"Reservations"} DeleteReservation = {DeleteReservationApi}/>} />
               <Drawer.Screen name="My favourites" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <HomeFeed  isHome ={false} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
-              hairdressers = {user?.favouritesHairdresser.map((el)=> el.hairdresser)} text = "Welcome" user = {user}/>} />
+              component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={false} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
+              hairdressers = {user?.favouritesHairdresser?.map((el)=> el.hairdresser)} text = "Welcome" user = {user}/>} />
             <Drawer.Screen name="My hairdressers" 
             options ={{drawerIcon:({focused, size}) => ( <Icon name="hair-dryer-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
             component={() => <MyHairdresser user = {user} text2 = {"Reservations"} DeleteReservation = {DeleteReservationApi}/>} />

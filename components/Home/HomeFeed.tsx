@@ -17,6 +17,8 @@ interface Props  {
     text : string;
     user : User | null;
     isHome : boolean;
+    hairdresser : Hairdresser | undefined;
+    setHairdresser : (hairdresser : Hairdresser | undefined) => void;
 }
 
 const HomeFeed = (props : Props) => {
@@ -52,9 +54,9 @@ const HomeFeed = (props : Props) => {
         <React.Fragment>
             <HeaderComponent text = {props.text} />
             <View style={{ flex: 1, backgroundColor: "#222629", flexDirection: "column" }} >
-                { props.isHome ? (<HomeFeedChip active = {active} HandleActive ={HandleActive}/>) :("") }
+                { props.isHome && props.user !== null ? (<HomeFeedChip active = {active} HandleActive ={HandleActive}/>) :(<Text></Text>) }
                 <HomeFeedSearch text = {text} HandleSearch ={HandleSearch}/>
-                <HomeFeedList hairdressers ={hairdressers} user ={props.user} AddFavouriteApi ={props.AddFavouriteApi} DeleteFavouriteApi ={props.DeleteFavouriteApi} />
+                <HomeFeedList hairdresser = {props.hairdresser} setHairdresser ={props.setHairdresser} hairdressers ={hairdressers} user ={props.user} AddFavouriteApi ={props.AddFavouriteApi} DeleteFavouriteApi ={props.DeleteFavouriteApi} />
             </View>
         </React.Fragment>
     )

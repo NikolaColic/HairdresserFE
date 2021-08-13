@@ -21,7 +21,7 @@ const SignIn = (props : Props) =>{
     
     const SignInApi = () =>{
         if(username.length === 0) {
-            setText("Empty entry");
+            setText("You must entry text for username;");
             return;
         }
         if(password.length <5){
@@ -86,21 +86,23 @@ const SignIn = (props : Props) =>{
             </View>
             <View style = {{flex: 0.2, alignItems: "center"}}>
                 <Text style = {{color:"#6B6E70", fontSize: 20,fontFamily:"sans-serif-medium", marginTop:"3%"}}>Don't have an account? 
-                <Text style = {{color:"#86C232"}} onPress = {()=> navigation.navigate('SignUp')}>Create one</Text></Text>
+                <Text style = {{color:"#86C232"}} onPress = {()=> navigation.navigate('Sign Up')}>Create one</Text></Text>
             </View>
             </View>
             <Snackbar
-            visible = {text !== null}
+            visible = {text != null}
             onDismiss = {() => setText(null)}
-            duration = {5000}
+            style = {{backgroundColor:"#61892F", width:"85%",marginLeft:"7%",borderColor:"#222629",borderRadius:7}}
+            duration = {3000}
             action={{
-                label: 'X',
+                label: "X",
                 onPress: () => {
                   setText(null)
                 },
               }}>
-            
+            <Text style = {{color:"white", fontSize:18,textAlign:"center"}}>
                 {text}
+            </Text>
             </Snackbar>
         </React.Fragment>
     );

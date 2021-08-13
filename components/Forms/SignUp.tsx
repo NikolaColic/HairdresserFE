@@ -18,14 +18,13 @@ interface Props  {
 
 const UpdateAccount = (props : Props) => {
     const [name, setName] = React.useState<string> ("");
-    const [surname, setSurname] = React.useState<string> ("");
     const [email, setEmail] = React.useState<string> ("");
     const [mobile, setMobile] = React.useState<string> ("");
     const [username, setUsername] = React.useState<string> ("");
     const [password, setPassword] = React.useState<string> ("");
 
     const SignUpApi = ()=>{
-      var user : User = new User(0,name,surname,username,email,new Date(),mobile,password,"",[],[],[]);
+      var user : User = new User(0,name,"",username,email,new Date(),mobile,password,"",[],[],[], false);
       props.SignUpApi(user);
     }
 
@@ -41,7 +40,6 @@ const UpdateAccount = (props : Props) => {
         placeholder='Enter name..' 
         placeholderTextColor = "#474B4F"
         label = "Name"
-
         labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
         inputContainerStyle = {{borderColor: "#474B4F"}}
         inputStyle = {{color:"white"}}
@@ -54,23 +52,7 @@ const UpdateAccount = (props : Props) => {
             color='#61892F'
             />}
         /> 
-        <Input
-        placeholder='Enter surname..' 
-        placeholderTextColor = "#474B4F"
-        label = "Surname"
-
-        labelStyle = {{color:"#61892F",fontFamily:"sans-serif-medium"}}
-        inputContainerStyle = {{borderColor: "#474B4F"}}
-        inputStyle = {{color:"white"}}
-        value = {surname}
-        onChangeText = {(surname) => setSurname(surname)}
-        leftIcon={
-            <Icon
-            name = "alpha-s-circle-outline" type ="material-community"
-            size={24}
-            color='#61892F'
-            />}
-        /> 
+       
         <Input
         placeholder='Enter email..' 
         placeholderTextColor = "#474B4F"

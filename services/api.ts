@@ -5,12 +5,12 @@ import { Reservation } from "../model/Reservation";
 import { SocialNetwork } from "../model/SocialNetwork";
 import { User } from "../model/User";
 
-const baseUrl = "http://107b4bf2c37d.ngrok.io/"; 
+const baseUrl = "http://2a1800b90ca8.ngrok.io/"; 
  
 //FavouriteHairdresser
 
 export const FavouriteHairdresserAPI = {
-    PostFavouriteHairdresserAPI, DeleteFavouriteHairdresserAPI 
+    PostFavouriteHairdresserAPI, DeleteFavouriteHairdresserAPI  
 }
  
 export async function PostFavouriteHairdresserAPI(favouriteHairdresser : FavouriteHairdresser) {
@@ -75,7 +75,7 @@ export async function GetSocialNetworks() : Promise<SocialNetwork[]> {
 export const UserAPI = {
     GetUsers, GetUserById, PostUserAPI, PutUserAPI, DeleteUserAPI, Authentification
 }
-export async function Authentification(user : User) : Promise<User> {
+export async function Authentification(user : User) {
   const res = await fetch(baseUrl + `hair/v1/users/authentification`, {
       method: "POST",
       body: JSON.stringify(user),
@@ -83,6 +83,9 @@ export async function Authentification(user : User) : Promise<User> {
         "Content-Type": "application/json",
       },
     });
+  if(!res.ok){
+    return null;
+  }
   const userResult = await res.json();
   return userResult;
 }

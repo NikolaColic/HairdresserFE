@@ -14,8 +14,8 @@ import { User } from '../../model/User';
 const image = { uri: "https://cdn.wallpapersafari.com/65/16/JCpf34.jpg" };
 
 interface Props {
-    hairdresser : Hairdresser;
-    user : User | null;
+    hairdresser : Hairdresser | undefined;
+    user : User;
     text : string;
 }
 
@@ -24,10 +24,10 @@ const HairdresserOne = (props : Props) => {
     const [visible, setVisible] = React.useState<number> (0);
     const HandleSocial = (isFacebook :boolean) =>{
         if(isFacebook){
-            const face = props.hairdresser.socialNetworks.find((el)=> el.socialNetwork.name.toLowerCase() === "facebook");
+            const face = props.hairdresser?.socialNetworks.find((el)=> el.socialNetwork.name.toLowerCase() === "facebook");
             return face === undefined ? "" : face.url;
         }else{
-            const face = props.hairdresser.socialNetworks.find((el)=> el.socialNetwork.name.toLowerCase() === "instagram");
+            const face = props.hairdresser?.socialNetworks.find((el)=> el.socialNetwork.name.toLowerCase() === "instagram");
             return face === undefined ? "" : face.url;
         }
     }
@@ -35,9 +35,9 @@ const HairdresserOne = (props : Props) => {
         try {
           const result = await Share.share({
             message:
-              'Posetite frizerski salon' + props.hairdresser.name + ' koji se nalazi na lokaciji ' + props.hairdresser.adress +
-              ' u opstini ' + props.hairdresser.municipality.name,
-            url: props.hairdresser.website,
+              'Posetite frizerski salon' + props.hairdresser?.name + ' koji se nalazi na lokaciji ' + props.hairdresser?.adress +
+              ' u opstini ' + props.hairdresser?.municipality.name,
+            url: props.hairdresser?.website,
             title : 'Skinite aplikaciju i rezervisite mesto u frizerskim salonima'
           });
           if (result.action === Share.sharedAction) {
@@ -62,7 +62,7 @@ const HairdresserOne = (props : Props) => {
                     <View style ={{flex:1}} >
                         <ImageBackground source={image} resizeMode="cover" style = {{width:"100%", height:"100%", alignItems:"center", justifyContent:"center"}}>
                             <Text style ={{color:"#86C232",textShadowRadius:80,textShadowColor:"white",fontFamily:"sans-serif-medium",fontSize:40, letterSpacing:4, textAlign:"center", textTransform:"uppercase"}}>
-                                {props.hairdresser.name}
+                                {props.hairdresser?.name}
                             </Text>
                             <Chip
                                 onPress = {()=> navigation.navigate('Create reservation')}
@@ -80,37 +80,37 @@ const HairdresserOne = (props : Props) => {
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="cellphone" type ="material-community" size={30} color = "#86C232"/>
                             <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
-                            {props.hairdresser.number}
+                            {props.hairdresser?.number}
                             </Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="email-outline" type ="material-community" size={30} color = "#86C232"/>
                             <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
-                            {props.hairdresser.gmail}
+                            {props.hairdresser?.gmail}
                             </Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="map-marker-outline" type ="material-community" size={30} color = "#86C232"/>
                             <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
-                            {props.hairdresser.adress}
+                            {props.hairdresser?.adress}
                             </Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="map-marker-radius-outline" type ="material-community" size={30} color = "#86C232"/>
                             <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
-                            {props.hairdresser.municipality.name}
+                            {props.hairdresser?.municipality.name}
                             </Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="account-circle-outline" type ="material-community" size={30} color = "#86C232"/>
                             <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
-                            {props.hairdresser.owner.name  + " " + props.hairdresser.owner.surname}
+                            {props.hairdresser?.owner.username  }
                             </Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:"5%", marginTop:"2%" }}>
                             <Icon name="gender-male-female" type ="material-community" size={30} color = "#86C232"/>
                             <Text style = {{fontSize:20,color:"white", marginLeft:"3%",fontFamily:"sans-serif-medium"}}>
-                            {props.hairdresser.gender === 1 ? "Muski" : props.hairdresser.gender === 2 ? "Zenski" : "Oba"}
+                            {props.hairdresser?.gender === 1 ? "Muski" : props.hairdresser?.gender === 2 ? "Zenski" : "Oba"}
                             </Text>
                         </View>
                         <View style ={{flex: 0.3,flexDirection:"row", alignContent:"space-between", marginLeft:"6%"}}>
@@ -140,7 +140,7 @@ const HairdresserOne = (props : Props) => {
                         </View>
                         <View style ={{flex: 0.3,flexDirection:"row",  alignContent:"space-between",marginLeft:"5%"}}>
                             <SocialIcon style = {{backgroundColor:"#61892F"}} type='facebook' iconSize = {25} onPress = {()=> Linking.openURL(HandleSocial(true)).catch(err => console.error("Couldn't load page", err))} />
-                            <SocialIcon style = {{backgroundColor:"#61892F"}} type='google' iconSize = {25} onPress = {()=> Linking.openURL(props.hairdresser.website).catch(err => console.error("Couldn't load page", err))} />
+                            <SocialIcon style = {{backgroundColor:"#61892F"}} type='google' iconSize = {25} onPress = {()=> Linking.openURL(props.hairdresser !== undefined ? props.hairdresser.website : "").catch(err => console.error("Couldn't load page", err))} />
                             <SocialIcon style = {{backgroundColor:"#61892F"}} type='instagram' iconSize = {25} onPress = {()=> Linking.openURL(HandleSocial(false)).catch(err => console.error("Couldn't load page", err))} />
                         </View>
                         <Snackbar
@@ -156,7 +156,7 @@ const HairdresserOne = (props : Props) => {
                             }}>
                                 <Text style = {{fontSize:15,color:"white",letterSpacing:1.5, fontFamily:"sans-serif-medium", lineHeight:20}}>
                                   {
-                                      visible === 1 ? props.hairdresser.description : visible === 2 ? props.hairdresser.pricelist : ""
+                                      visible === 1 ? props.hairdresser?.description : visible === 2 ? props.hairdresser?.pricelist : ""
                                   }
                                 </Text>
             </Snackbar>

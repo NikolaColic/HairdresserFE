@@ -12,6 +12,7 @@ import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { Reservation } from '../../model/Reservation';
 import { Hairdresser } from '../../model/Hairdresser';
 import { User } from '../../model/User';
+import {Snackbar} from 'react-native-paper';
 
 interface Props  {
     AddReservationApi : (reservation : Reservation) => void;
@@ -29,7 +30,19 @@ const AddReservation = (props : Props) => {
   const [description, setDescription] = React.useState<string>("");
   const [note, setNote] = React.useState<string>("");
   const [items, setItems] = React.useState<ItemType[]>([]);
+  const [resText, setResText] = React.useState<string> ("");
+  const [text,setText] = React.useState<string | null> (null);
+  const [error, setError] = React.useState<boolean> (false);
  
+
+  const HandleDismissSnackbar = ()=>{
+    setText(null);
+    setError(true);
+  }
+  const HandleOpenSnackbar = (textSnackbar : string, signal : boolean)=>{
+    setText(textSnackbar);
+    setError(signal);
+  }
 
   const AddReservationApi = () =>{
       const hairdresser = props.hairdressers?.find((el)=> el.name === value);
@@ -51,12 +64,70 @@ const AddReservation = (props : Props) => {
   },[])
 
     const handleConfirm = (date : Date) =>{
-        setDate(date);
-        setDateTitle(date.toLocaleDateString() + " " +date.toLocaleTimeString()); 
         setDateVisible(false);
+        if(value === null){
+            HandleOpenSnackbar('You must first choose hairdresser',false);
+            
+            return;
+        }
+        if(new Date() > date){
+            HandleOpenSnackbar('Date must be greather than now',true);
+            return;
+        }
+        if(date.getHours() < 8 || date.getHours() > 20){
+            HandleOpenSnackbar('Reservation must be between 8h and 20h',true);
+            return;
+        }
+        const haird = props.hairdressers?.find((el)=>  el.name === value);
+        if(haird !== undefined){
+            
+            const res = haird.reservations?.find((el)=> el.time < date && date < new Date(el.time.setMinutes(el.time.getMinutes() + 20)));
+            
+            if(res !== undefined){
+                HandleOpenSnackbar('Reservation at that datetime exist!',true);
+                return;
+            }
+            try{
+                const resExist = haird.reservations?.filter((el)=> el.time.getDate === date.getDate && el.time.getMonth === date.getMonth);
+            
+                var resText2 = "";
+                alert( resExist.length === 0);
+                if(resExist !== undefined && resExist.length > 0){
+                    resExist.map((el)=>{
+                        resText2 += el.time.getHours() + ":" + el.time.getMinutes() + " - " + el.time.getHours() + ":" + el.time.getMinutes() + 20 +", ";
+                    });
+                    
+                }
+                alert(resText2);
+                setDate(date);
+                setResText(resText2);
+                setDateTitle(date.toLocaleDateString() + " " +date.toLocaleTimeString()); 
+            }catch(e){
+                alert("ERROR" +e);
+            }
+        }
+
     }
     return (
         <React.Fragment>
+            <Snackbar
+            visible = {text != null}
+            onDismiss = {() => HandleDismissSnackbar()}
+            style = {error ? {backgroundColor:"#C3073F", width:"85%",marginLeft:"7%",borderColor:"#222629",borderRadius:7}
+          : {backgroundColor:"#61892F", width:"85%",marginLeft:"7%",borderColor:"#222629",borderRadius:7}
+          }
+            duration = {3000}
+            action={{
+                label: "X",
+                onPress: () => {
+                  HandleDismissSnackbar()
+                },
+              }}>
+            <Text style = {{color:"white", fontSize:18,textAlign:"center"}}>
+                {text}
+
+            </Text>
+            </Snackbar>
             <HeaderComponent text = {props.text} />
             <SafeAreaView style = {{flex: 1, backgroundColor: "#222629",flexDirection:"column"}}> 
             <View style = {{flex: 0.2,width: "90%", marginLeft:"5%"}}> 
@@ -99,6 +170,9 @@ const AddReservation = (props : Props) => {
                     onCancel={()=> setDateVisible(false)}
                         />
             </View>
+            <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232",fontFamily:"sans-serif-medium"}}>
+               {resText}
+            </Text>
             <View style = {{flex: 0.4,width: "90%", marginLeft:"5%"}}>
             <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232",fontFamily:"sans-serif-medium"}}>
                     Add informations:

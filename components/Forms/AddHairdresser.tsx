@@ -13,6 +13,7 @@ import { User } from "../../model/User";
 import { Municipality } from "../../model/Municipality";
 import { SocialNetwork } from "../../model/SocialNetwork";
 import { SocialHairdresser } from "../../model/SocialHairdresser";
+import {Snackbar} from 'react-native-paper'
 
 
 interface Props  {
@@ -44,24 +45,32 @@ const AddHairdresser = (props : Props) => {
   const [value2, setValue2] = React.useState<string | null> (null);
   const [municipality, setMunicipality] = React.useState<string> ("");
   const [gender, setGender] = React.useState<number> (0);
-  
+  //Snackbar
+  const [text,setText] = React.useState<string | null> (null);
+  const [error, setError] = React.useState<boolean> (false);
+ 
+
+  const HandleDismissSnackbar = ()=>{
+    setText(null);
+    setError(true);
+  }
+  const HandleOpenSnackbar = (textSnackbar : string, signal : boolean)=>{
+    setText(textSnackbar);
+    setError(signal);
+  }
   const OnSubmit = ()=>{
     const municipalityFind = props.municipalities.find((el)=> el.name.toLowerCase().includes(municipality.toLowerCase()));
     if(municipalityFind === undefined){
-      //poruka
+      HandleOpenSnackbar("You must entry valid municipality", true);
       return;
     }
-    if(value2 === null){
-      //po
-      return;
-    }
+    if(value2 ===  null) return;
     const userFind = props.users.find((el)=> el.username.toLowerCase().includes(value2.toLowerCase()));
     if(userFind === undefined){
-      //poruka
+      HandleOpenSnackbar("You must entry valid user", true);
       return;
     }
     const socialNetworks = SetSocialNetworks();
-    alert(adress);
     const hairdresser = new Hairdresser(0,name,adress,taxId,parentId,number,email,website,description,pricelist,gender,municipalityFind,userFind,[],[],socialNetworks);
 
     props.AddHairdresser(hairdresser);
@@ -88,7 +97,57 @@ const AddHairdresser = (props : Props) => {
 
   }
   const OnNextStep = () =>{
-    //ovde se validira sada za taj step u zavisnosti od numbera (i ako je okej moze preci na sledeci);
+    if(step === 0){
+      if(name === "" || adress === "") {
+        HandleOpenSnackbar("Empty entry", true);
+        return;
+      }
+      if(taxId.length != 13){
+        HandleOpenSnackbar("Tax id must have 13 letters", true);
+        return;
+      }
+      if(parentId.length != 13){
+        HandleOpenSnackbar("Parent id must have 13 letters", true);
+        return;
+      }
+    }else if(step == 1){
+      if(email === "" || number === "") {
+        HandleOpenSnackbar("Empty entry", true);
+        return;
+      }
+
+      if(!email.trim().endsWith("@gmail.com") && email.trim().endsWith("@hotmail.com") && email.trim().endsWith("@outlook.com")
+      && email.trim().endsWith("@fon.bg.ac.rs")){
+        HandleOpenSnackbar("You must entry valid email adress",true);
+        return;
+      }
+      if(facebook !== "" && !facebook.includes("facebook")){
+        HandleOpenSnackbar("You must entry valid facebook url",true);
+        return;
+      }
+      if(instagram !== "" && !instagram.includes("facebook")){
+        HandleOpenSnackbar("You must entry valid facebook url",true);
+        return;
+      }
+    }else if(step ==2){
+      if(value2 === null){
+        HandleOpenSnackbar("You must choose owner",true);
+        return;
+      }
+      if(municipality === ""){
+        HandleOpenSnackbar("You must entry municipality",true);
+        return;
+      }
+    }else{
+      if(description === ""){
+        HandleOpenSnackbar("You must entry description",true);
+        return;
+      }
+      if(pricelist === ""){
+        HandleOpenSnackbar("You must entry pricelist",true);
+        return;
+      }
+    }
     setStep((p) => p + 1)
   }
 
@@ -104,7 +163,26 @@ const AddHairdresser = (props : Props) => {
     />,<AddHairdresserFour description ={description} setDescription ={setDescription} pricelist = {pricelist} setPricelist ={setPricelist} />]
 
   return (
+
     <React.Fragment>
+      <Snackbar
+            visible = {text != null}
+            onDismiss = {() => HandleDismissSnackbar()}
+            style = {error ? {backgroundColor:"#C3073F", width:"85%",marginLeft:"7%",borderColor:"#222629",borderRadius:7}
+          : {backgroundColor:"#61892F", width:"85%",marginLeft:"7%",borderColor:"#222629",borderRadius:7}
+          }
+            duration = {3000}
+            action={{
+                label: "X",
+                onPress: () => {
+                  HandleDismissSnackbar()
+                },
+              }}>
+            <Text style = {{color:"white", fontSize:18,textAlign:"center"}}>
+                {text}
+
+            </Text>
+            </Snackbar>
       <HeaderComponent text = {props.text} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "#222629", flexDirection: "column" }} >
       <Stepper
