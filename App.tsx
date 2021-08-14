@@ -23,7 +23,7 @@ import { SocialNetwork } from './model/SocialNetwork';
 import { Municipality } from './model/Municipality';
 import { FavouriteHairdresserAPI, HairdresserAPI, MunicipalityAPI, ReservationsAPI, SocialNetworkAPI, UserAPI } from './services/api';
 import { FavouriteHairdresser } from './model/FavouriteHairdresser';
-import {Text} from 'react-native';
+import {Text, Vibration} from 'react-native';
 import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 const Drawer = createDrawerNavigator();
 
@@ -38,7 +38,7 @@ const  App = () => {
   const [error, setError] = React.useState<boolean> (false);
   const isLoadingComplete = useCachedResources();
   const [number, setNumber] = React.useState<number> (1); 
- 
+  const [hairdresserReservation, setHairdresserReservation] = React.useState<Hairdresser | undefined> (undefined);
 
   const HandleDismissSnackbar = ()=>{
     setText(null);
@@ -75,6 +75,7 @@ const  App = () => {
       const res : any = await UserAPI.Authentification(user1);
       if(res !==  null){
         if(username === "nikola") res.isAdministrator = true;
+        Vibration.vibrate();
         setUser(res);
       }else{
         HandleOpenSnackbar("Invalid sign in", true);
@@ -115,6 +116,7 @@ const  App = () => {
       const res = await UserAPI.PostUserAPI(user);
       if(res){
         HandleOpenSnackbar("You have successfully created account", false);
+        Vibration.vibrate();
       }else{
         HandleOpenSnackbar("Invalid sign up", true);
       }
@@ -124,19 +126,28 @@ const  App = () => {
   }
   const AddReservationApi = async (reservation : Reservation) => {
     try{
-      console.log(user);
       if(user !== null) {
         reservation.user = user;
       }
+      if(reservation.description === ""){
+        HandleOpenSnackbar("You must entry description", true);
+        return;
+      }
+      if(reservation.hairdresser?.reservations.filter((el)=> reservation.time > el.time && reservation.time < new Date(el.time.setMinutes(el.time.getMinutes() + 20))).length > 0){
+        HandleOpenSnackbar("Reservation at that time exist", true);
+        return;
+      }
+      reservation.time = new Date(reservation.time.setHours(reservation.time.getHours() +2));
       const res = await ReservationsAPI.PostReservationAPI(reservation);
       if(res){
         const hairdressers = await HairdresserAPI.GetHairdressers();
         setHairdressers(hairdressers);
         if(user !== null){
           const user2 = await UserAPI.Authentification(user);
-          setUser(user);
+          if(user2.username === "nikola") user2.isAdministrator = true;
+          setUser(user2);
         }
-
+        Vibration.vibrate();
         HandleOpenSnackbar("You have successfully created reservation", false);
       }else{
         HandleOpenSnackbar("You dont have successfully created reservation", true);
@@ -149,9 +160,12 @@ const  App = () => {
     try{
       const res = await ReservationsAPI.DeleteReservationAPI(reservation.reservationId);
       if(res){
-        user?.reservationsHistory.filter((reser)=> reser.reservationId !== reservation.reservationId);
-        console.log(user);
-        setUser(user);
+        if(user !== null){
+          const user2 = await UserAPI.Authentification(user);
+          if(user2.username === "nikola") user2.isAdministrator = true;
+          setUser(user2);
+        }
+       
         HandleOpenSnackbar("You have successfully delete reservation", false);
 
       }else{
@@ -172,6 +186,7 @@ const  App = () => {
       if(res){
         HandleOpenSnackbar("You have successfully create hairdresser", false);
         const hairdressers = await HairdresserAPI.GetHairdressers();
+        Vibration.vibrate();
         setHairdressers(hairdressers);
       }else{
         HandleOpenSnackbar("You dont have successfully create hairdresser", true);
@@ -200,7 +215,7 @@ const  App = () => {
           HandleOpenSnackbar("User with same name exist. Please try again",true);
           return;
         }
-        if(users.find((el)=> el.email === user.email !== undefined && el.userId != user.userId)){
+        if(users.find((el)=> el.email === user.email  && el.userId != user.userId) !== undefined){
           HandleOpenSnackbar("User with same email exist. Please try again",true);
           return;
         }
@@ -231,9 +246,13 @@ const  App = () => {
       const res = await FavouriteHairdresserAPI.PostFavouriteHairdresserAPI(favourite);
       if(res){
         HandleOpenSnackbar('You have successfully add favourite hairdresser', false);
-        
-        user?.favouritesHairdresser.push(favourite);
-        setUser(user);
+        if(user !== null){
+          const user2 = await UserAPI.Authentification(user);
+          if(user2.username === "nikola") user2.isAdministrator = true;
+          setUser(user2);
+          Vibration.vibrate();
+        }
+       
       }else{
         HandleOpenSnackbar('You dont have successfully add favourite hairdresser', true);
       }
@@ -247,11 +266,18 @@ const  App = () => {
       if(favourite !== undefined){
         const res = await FavouriteHairdresserAPI.DeleteFavouriteHairdresserAPI(favourite?.favouriteHairdresserId);
         if(res){
-          HandleOpenSnackbar('You have successfully add favourite hairdresser', false);
-          user?.favouritesHairdresser.filter((el) => el.hairdresser.hairdresserId !== hairdresser.hairdresserId);
-          setUser(user);
+          HandleOpenSnackbar('You have successfully delete favourite hairdresser', false);
+          if(user !== null){
+            const user2 = await UserAPI.Authentification(user);
+            if(user2.username === "nikola") user2.isAdministrator = true;
+            setUser(user2);
+            Vibration.vibrate();
+          }
+          // user?.favouritesHairdresser.filter((el)=> el.hairdresser.hairdresserId !== hairdresser.hairdresserId);
+          //   setUser(user);
+           
         }else{
-          HandleOpenSnackbar('You dont have successfully add favourite hairdresser', true);
+          HandleOpenSnackbar('You dont have successfully delete favourite hairdresser', true);
         }
 
       }
@@ -269,8 +295,9 @@ const  App = () => {
         <Snackbar
             visible = {text != null}
             onDismiss = {() => HandleDismissSnackbar()}
+            
             style = {error ? {backgroundColor:"#C3073F", width:"85%",marginLeft:"7%",borderColor:"#222629",borderRadius:7}
-          : {backgroundColor:"#61892F", width:"85%",marginLeft:"7%",borderColor:"#222629",borderRadius:7}
+          : {backgroundColor:"#61892F", width:"85%",marginLeft:"7%",borderColor:"#222629",borderRadius:7, alignItems:"center",justifyContent:"center"}
           }
             duration = {3000}
             action={{
@@ -279,7 +306,7 @@ const  App = () => {
                   HandleDismissSnackbar()
                 },
               }}>
-            <Text style = {{color:"white", fontSize:18,textAlign:"center"}}>
+            <Text style = {{color:"white", fontSize:18,textAlign:"center", alignContent:"center"}}>
                 {text}
 
             </Text>
@@ -294,14 +321,22 @@ const  App = () => {
              drawerStyle = {{backgroundColor:"#222629",borderRadius:1,marginVertical: 0,borderRightWidth:0.5,borderRightColor:'#86C232'}} >
                 <Drawer.Screen name="Home" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="home" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
-                hairdressers = {hairdressers} text = "Welcome" user = {user}/>}  />  
+                component = {() => (
+                <HomeFeed setHairdresserReservation ={setHairdresserReservation}  hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
+                hairdressers = {hairdressers} text = "Welcome" user = {user}/>
+                )}  />
                 <Drawer.Screen name="Sign In" 
-                options ={{drawerIcon:({focused, size}) => ( <Icon name="login-variant" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={() => <SignIn text = {"SignIn"} SignInApi = {SignInApi} />}  />
+                options ={{drawerIcon:({focused, size}) => ( <Icon name="login-variant" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}>
+              {() => (
+                   <SignIn text = {"SignIn"} SignInApi = {SignInApi} />
+                   )} 
+                   </Drawer.Screen>
                 <Drawer.Screen name="Sign Up" 
-                options ={{drawerIcon:({focused, size}) => ( <Icon name="account-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={() => <SignUp text ="Sign up" SignUpApi = {SignUpApi} />} />
+                options ={{drawerIcon:({focused, size}) => ( <Icon name="account-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}} >
+                {() => ( 
+                <SignUp text ="Sign up" SignUpApi = {SignUpApi}
+                 />)} 
+                 </Drawer.Screen>
                 
 
               </Drawer.Navigator>
@@ -314,33 +349,48 @@ const  App = () => {
             drawerStyle = {{backgroundColor:"#222629",borderRadius:1,marginVertical: 0,borderRightWidth:0.5,borderRightColor:'#86C232'}} >
               <Drawer.Screen name="Home" 
                   options ={{drawerIcon:({focused, size}) => ( <Icon name="home" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                  component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
-                  hairdressers = {hairdressers} text = "Welcome" user = {user}/>} /> 
+                  component = {() => <HomeFeed setHairdresserReservation ={setHairdresserReservation}  hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
+                    hairdressers = {hairdressers} text = "Welcome" user = {user}/>} />
               <Drawer.Screen name="My reservation" 
                   options ={{drawerIcon:({focused, size}) => ( <Icon name="note-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                  component={() => <ReservationList user = {user} text2 = {"Reservations"} DeleteReservation = {DeleteReservationApi}/>} />
-              <Drawer.Screen name="My favourites" 
-                  options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                  component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={false} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
-                  hairdressers = {user?.favouritesHairdresser?.map((el)=> el.hairdresser)} text = "Welcome" user = {user}/>} />
-              <Drawer.Screen name="My hairdressers" 
-              options ={{drawerIcon:({focused, size}) => ( <Icon name="hair-dryer-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={MyHairdresser} />
+                  >
+                  {() => <ReservationList user = {user} text2 = {"Reservations"} DeleteReservation = {DeleteReservationApi}/>}
+
+                  </Drawer.Screen>
+             
+                  <Drawer.Screen name="My hairdressers" 
+              options ={{drawerIcon:({focused, size}) => ( <Icon name="hair-dryer-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}>
+              {() => <MyHairdresser hairdressers = {hairdressers} user = {user} text2 = {"My hairdressers"} DeleteReservation = {DeleteReservationApi}/>}
+              </Drawer.Screen>
               <Drawer.Screen name="Add hairdresser" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="plus-circle-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <AddHairdresser socialNetworks = {socialNetworks} municipalities ={municipilities} text = {"Add hairdresser"} users = {users} AddHairdresser = {AddHairdresserApi}/>} />
+              >
+              {() => <AddHairdresser socialNetworks = {socialNetworks} municipalities ={municipilities} text = {"Add hairdresser"} users = {users} AddHairdresser = {AddHairdresserApi}/>} 
+              </Drawer.Screen>
               <Drawer.Screen name="Create reservation" 
+                
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={() => <AddReservation text = {"Create reservation"} hairdressers = {hairdressers} AddReservationApi = {AddReservationApi}/>} />
+                >
+                {() => <AddReservation hairdresserReservation ={hairdresserReservation} setHairdresserReservation ={setHairdresserReservation}  text = {"Create reservation"} hairdressers = {hairdressers} AddReservationApi = {AddReservationApi}/>}
+
+                </Drawer.Screen>
               <Drawer.Screen name="Edit profile" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="account-edit-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <UpdateAccount user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} />
+              >
+              {() => <UpdateAccount user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} 
+              </Drawer.Screen>
               <Drawer.Screen name="Change password" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <ChangePassword user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} />
-                <Drawer.Screen name="Hairdresser one" 
-                  options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                  component={(props) => <HairdresserOne {...props} hairdresser = {hairdresserOne} user ={user} text ="Hairdresser detail" />} />
+              >
+              {() => <ChangePassword user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} 
+
+              </Drawer.Screen>
+              <Drawer.Screen name="Hairdresser one" 
+                options ={{drawerIcon:({focused, size}) => ( <Icon name="chair-rolling" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+                >
+
+                {(props : any) => <HairdresserOne {...props} setHairdresserReservation ={setHairdresserReservation} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} hairdresser = {hairdresserOne} user ={user} text ="Hairdresser detail" />} 
+                </Drawer.Screen>
             </Drawer.Navigator>
            ) : user !== undefined && user !== null && (user.hairdressersOwner === null || user.hairdressersOwner?.length == 0) ? (
           <Drawer.Navigator initialRouteName="Home" 
@@ -351,24 +401,39 @@ const  App = () => {
             drawerStyle = {{backgroundColor:"#222629",borderRadius:1,marginVertical: 0,borderRightWidth:0.5,borderRightColor:'#86C232'}} >
               <Drawer.Screen name="Home" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="home" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
-                hairdressers = {hairdressers} text = "Welcome" user = {user}/>} /> 
+                >
+               {() => <HomeFeed setHairdresserReservation ={setHairdresserReservation} hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
+                hairdressers = {hairdressers} text = "Welcome" user = {user}/>} 
+
+                </Drawer.Screen>
               <Drawer.Screen name="My reservation" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="note-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <ReservationList user = {user} text2 = {"Reservations"} DeleteReservation = {DeleteReservationApi}/>} />
-              <Drawer.Screen name="My favourites" 
-              options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <HomeFeed  hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={false} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
-              hairdressers = {user?.favouritesHairdresser?.map((el)=> el.hairdresser)} text = "Welcome" user = {user}/>} />
+              >
+              {() => <ReservationList user = {user} text2 = {"Reservations"} DeleteReservation = {DeleteReservationApi}/>}
+              </Drawer.Screen>
+              
               <Drawer.Screen name="Create reservation" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <AddReservation text = {"Create reservation"} hairdressers = {hairdressers} AddReservationApi = {AddReservationApi}/>} />
+              >
+              {() => <AddReservation hairdresserReservation ={hairdresserReservation} setHairdresserReservation ={setHairdresserReservation} text = {"Create reservation"} hairdressers = {hairdressers} AddReservationApi = {AddReservationApi}/>} 
+              </Drawer.Screen>
               <Drawer.Screen name="Edit profile" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="account-edit-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <UpdateAccount user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} />
+              >
+              {() => <UpdateAccount user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} 
+              </Drawer.Screen>
               <Drawer.Screen name="Change password" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={() => <ChangePassword user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} />
+                >
+                {() => <ChangePassword user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} 
+
+                </Drawer.Screen>
+                <Drawer.Screen name="Hairdresser one" 
+                options ={{drawerIcon:({focused, size}) => ( <Icon name="chair-rolling" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+                >
+
+                {(props : any) => <HairdresserOne {...props} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} setHairdresserReservation ={setHairdresserReservation} hairdresser = {hairdresserOne} user ={user} text ="Hairdresser detail" />} 
+                </Drawer.Screen>
             </Drawer.Navigator>
            ) :  (
             <Drawer.Navigator initialRouteName="Home" 
@@ -379,27 +444,46 @@ const  App = () => {
             drawerStyle = {{backgroundColor:"#222629",borderRadius:1,marginVertical: 0,borderRightWidth:0.5,borderRightColor:'#86C232'}} >
             <Drawer.Screen name="Home" 
                 options ={{drawerIcon:({focused, size}) => ( <Icon name="home" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-                component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
-                hairdressers = {hairdressers} text = "Welcome" user = {user}/>} /> 
+               >
+                {() => <HomeFeed   setHairdresserReservation ={setHairdresserReservation} hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={true} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
+                hairdressers = {hairdressers} text = "Welcome" user = {user}/>} 
+               </Drawer.Screen>
+
               <Drawer.Screen name="My reservation" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="note-plus-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <ReservationList user = {user} text2 = {"Reservations"} DeleteReservation = {DeleteReservationApi}/>} />
-              <Drawer.Screen name="My favourites" 
-              options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <HomeFeed hairdresser ={hairdresserOne} setHairdresser ={setHairdresserOne} isHome ={false} AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} 
-              hairdressers = {user?.favouritesHairdresser?.map((el)=> el.hairdresser)} text = "Welcome" user = {user}/>} />
-            <Drawer.Screen name="My hairdressers" 
-            options ={{drawerIcon:({focused, size}) => ( <Icon name="hair-dryer-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-            component={() => <MyHairdresser user = {user} text2 = {"Reservations"} DeleteReservation = {DeleteReservationApi}/>} />
+              >
+              {() => <ReservationList user = {user} text2 = {"Reservations"} DeleteReservation = {DeleteReservationApi}/>} 
+
+              </Drawer.Screen>
+             
+              <Drawer.Screen name="My hairdressers" 
+              options ={{drawerIcon:({focused, size}) => ( <Icon name="hair-dryer-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}>
+              {() => <MyHairdresser hairdressers = {hairdressers} user = {user} text2 = {"My hairdressers"} DeleteReservation = {DeleteReservationApi}/>}
+              </Drawer.Screen>
             <Drawer.Screen name="Create reservation" 
               options ={{drawerIcon:({focused, size}) => ( <Icon name="bookmark-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-              component={() => <AddReservation text = {"Create reservation"} hairdressers = {hairdressers} AddReservationApi = {AddReservationApi}/>} />
+              >
+              {() => <AddReservation hairdresserReservation ={hairdresserReservation} setHairdresserReservation ={setHairdresserReservation} text = {"Create reservation"} hairdressers = {hairdressers} AddReservationApi = {AddReservationApi}/>} 
+
+              </Drawer.Screen>
             <Drawer.Screen name="Edit profile" 
             options ={{drawerIcon:({focused, size}) => ( <Icon name="account-edit-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-            component={() => <UpdateAccount user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} />
+            >
+            {() => <UpdateAccount user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} 
+
+            </Drawer.Screen>
             <Drawer.Screen name="Change password" 
             options ={{drawerIcon:({focused, size}) => ( <Icon name="lock-outline" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
-            component={() => <ChangePassword user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} />
+            >
+            {() => <ChangePassword user = {user} text = {"Update account"} UpdateAccount = {UpdateAccountApi}/>} 
+
+            </Drawer.Screen>
+            <Drawer.Screen name="Hairdresser one" 
+                options ={{drawerIcon:({focused, size}) => ( <Icon name="chair-rolling" type="material-community" size={size} color={focused ? '#86C232' : '#6B6E70'} /> )}}
+                >
+
+                {(props : any) => <HairdresserOne {...props}  AddFavouriteApi = {AddFavouriteApi} DeleteFavouriteApi = {DeleteFavouriteApi} setHairdresserReservation ={setHairdresserReservation} hairdresser = {hairdresserOne} user ={user} text ="Hairdresser detail" />} 
+                </Drawer.Screen>
           </Drawer.Navigator>
            ) 
           

@@ -78,7 +78,7 @@ const ChangePassword = (props : Props) =>{
         /> 
                     <Chip
                 title="CHANGE PASSWORD"
-                containerStyle = {{width:"89%", marginLeft:"6%"}}
+                containerStyle = {{width:"89%", marginLeft:"6%", marginBottom:"15%"}}
                 buttonStyle = {{height:"40%",alignContent:"center",backgroundColor:"#61892F"}}
                 titleStyle = {{fontSize:20, letterSpacing:3,fontFamily:"sans-serif-medium"}}
                 onPress = {()=> ChangePassword()}

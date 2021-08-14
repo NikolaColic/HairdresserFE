@@ -13,11 +13,14 @@ import { Reservation } from '../../model/Reservation';
 import { Hairdresser } from '../../model/Hairdresser';
 import { User } from '../../model/User';
 import {Snackbar} from 'react-native-paper';
+import { useNavigation} from '@react-navigation/native';
 
 interface Props  {
     AddReservationApi : (reservation : Reservation) => void;
     hairdressers : Hairdresser[] | undefined;
     text : string;
+    hairdresserReservation : Hairdresser | undefined;
+    setHairdresserReservation : (hairdresserReservation : Hairdresser | undefined) => void;
 }
 
 
@@ -26,14 +29,12 @@ const AddReservation = (props : Props) => {
   const [dateTitle, setDateTitle] = React.useState<string> ("Add datetime");
   const [date, setDate] = React.useState<Date | null> (null);
   const [open, setOpen] = React.useState<boolean>(false);
-  const [value, setValue] = React.useState(null);
+  const [value, setValue] = React.useState<string | null>(null);
   const [description, setDescription] = React.useState<string>("");
   const [note, setNote] = React.useState<string>("");
   const [items, setItems] = React.useState<ItemType[]>([]);
-  const [resText, setResText] = React.useState<string> ("");
   const [text,setText] = React.useState<string | null> (null);
   const [error, setError] = React.useState<boolean> (false);
- 
 
   const HandleDismissSnackbar = ()=>{
     setText(null);
@@ -49,11 +50,14 @@ const AddReservation = (props : Props) => {
       if(date === null){
           return;
       }
+      props.setHairdresserReservation(undefined);
+      setValue(null);
       if(hairdresser !== undefined ){
           var res : Reservation = new Reservation(0, hairdresser, {} as User, date, description, note, 1);
           props.AddReservationApi(res);
       }
   }
+  const navigation = useNavigation();
   React.useEffect(()=>{
     var itemTypes : ItemType[] = [];
     props.hairdressers?.map((el)=>{
@@ -61,6 +65,13 @@ const AddReservation = (props : Props) => {
         itemTypes.push(itemType);
     })
     setItems(itemTypes);
+    
+    if(props.hairdresserReservation !== undefined ){
+        setValue(props.hairdresserReservation.name);
+        
+    }else{
+        setValue(null);
+    }
   },[])
 
     const handleConfirm = (date : Date) =>{
@@ -80,31 +91,9 @@ const AddReservation = (props : Props) => {
         }
         const haird = props.hairdressers?.find((el)=>  el.name === value);
         if(haird !== undefined){
-            
-            const res = haird.reservations?.find((el)=> el.time < date && date < new Date(el.time.setMinutes(el.time.getMinutes() + 20)));
-            
-            if(res !== undefined){
-                HandleOpenSnackbar('Reservation at that datetime exist!',true);
-                return;
-            }
-            try{
-                const resExist = haird.reservations?.filter((el)=> el.time.getDate === date.getDate && el.time.getMonth === date.getMonth);
-            
-                var resText2 = "";
-                alert( resExist.length === 0);
-                if(resExist !== undefined && resExist.length > 0){
-                    resExist.map((el)=>{
-                        resText2 += el.time.getHours() + ":" + el.time.getMinutes() + " - " + el.time.getHours() + ":" + el.time.getMinutes() + 20 +", ";
-                    });
-                    
-                }
-                alert(resText2);
-                setDate(date);
-                setResText(resText2);
-                setDateTitle(date.toLocaleDateString() + " " +date.toLocaleTimeString()); 
-            }catch(e){
-                alert("ERROR" +e);
-            }
+            setDate(date);
+            // setResText(resText2);
+            setDateTitle(date.toLocaleDateString() + " " +date.toLocaleTimeString()); 
         }
 
     }
@@ -170,9 +159,7 @@ const AddReservation = (props : Props) => {
                     onCancel={()=> setDateVisible(false)}
                         />
             </View>
-            <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232",fontFamily:"sans-serif-medium"}}>
-               {resText}
-            </Text>
+            
             <View style = {{flex: 0.4,width: "90%", marginLeft:"5%"}}>
             <Text style = {{fontSize:20, letterSpacing:2, color: "#86C232",fontFamily:"sans-serif-medium"}}>
                     Add informations:

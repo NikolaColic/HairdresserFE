@@ -86,7 +86,7 @@ const SignIn = (props : Props) =>{
             </View>
             <View style = {{flex: 0.2, alignItems: "center"}}>
                 <Text style = {{color:"#6B6E70", fontSize: 20,fontFamily:"sans-serif-medium", marginTop:"3%"}}>Don't have an account? 
-                <Text style = {{color:"#86C232"}} onPress = {()=> navigation.navigate('Sign Up')}>Create one</Text></Text>
+                <Text style = {{color:"#86C232"}} onPress = {()=> navigation.navigate('Sign Up')}> Create one</Text></Text>
             </View>
             </View>
             <Snackbar

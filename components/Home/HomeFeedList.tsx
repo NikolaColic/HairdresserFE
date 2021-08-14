@@ -14,6 +14,7 @@ interface Props  {
   user : User | null;
   hairdresser : Hairdresser | undefined;
   setHairdresser : (hairdresser : Hairdresser | undefined) => void;
+  setHairdresserReservation : (hairdresserReservation : Hairdresser | undefined) => void;
 }
 
 const HomeFeedList = (props : Props) =>{
@@ -23,6 +24,8 @@ const HomeFeedList = (props : Props) =>{
       if(props.user === null || props.user === undefined){
         setActive(true);
       }else{
+
+        props.setHairdresserReservation(el); 
         navigation.navigate('Create reservation')
       }
     }else{
@@ -38,7 +41,7 @@ const HomeFeedList = (props : Props) =>{
   const HandleFavouriteIcon = (el : Hairdresser) =>{
     if(props.user !==  null && props.user !== undefined){
       if(props.user.favouritesHairdresser !==  null && props.user.favouritesHairdresser.length > 0){
-        if(props.user.favouritesHairdresser.find((e)=> e.hairdresser.hairdresserId === el.hairdresserId) !== undefined){
+        if(props.user.favouritesHairdresser?.find((e)=> e.hairdresser !== null && e.hairdresser.hairdresserId === el.hairdresserId) !== undefined){
           return true;
         }else{
           return false;
@@ -53,7 +56,7 @@ const HomeFeedList = (props : Props) =>{
 
   const HandleFavourite = (el : Hairdresser) =>{
     if(props.user !==  null && props.user !== undefined){
-      if(props.user?.favouritesHairdresser !==  undefined && props.user.favouritesHairdresser.length > 0){
+      if(props.user?.favouritesHairdresser !==  undefined && props.user?.favouritesHairdresser.length > 0){
         if(props.user.favouritesHairdresser.find((e)=> e.hairdresser.hairdresserId === el.hairdresserId) !== undefined){
           props.DeleteFavouriteApi(el);
         }else{
@@ -84,12 +87,10 @@ const HomeFeedList = (props : Props) =>{
                 You must Sign in
             </Text>
             </Snackbar>
-      <ScrollView
+      {/* <ScrollView
       scrollEnabled
       keyboardDismissMode = "on-drag"
-      >
-             {console.log("Nikola " + props.hairdressers
-             )}
+      > */}
                 { props.hairdressers?.map((el)=> (
                   <React.Fragment key = {el.hairdresserId}>
             <ListItem.Swipeable
@@ -112,18 +113,26 @@ const HomeFeedList = (props : Props) =>{
                 onPress = {() => HandleCreateDetail(true,el)} 
               />
             }>
-            <Icon name={HandleFavouriteIcon(el) ? "heart" : "heart-outline"} onPress ={()=> HandleFavourite(el)} type ="material-community" color ="#61892F" size = {25} />
+            <Button
+            buttonStyle = {{borderColor:"transparent"}}
+            onPress ={()=> HandleFavourite(el)}
+              icon={
+                <Icon name={HandleFavouriteIcon(el) ? "heart" : "heart-outline"}   type ="material-community" color ="#61892F" size = {25} />
+              }
+              type = "outline"
+            />
+            {/* <Icon name={HandleFavouriteIcon(el) ? "heart" : "heart-outline"}  onPress ={()=> HandleFavourite(el)} type ="material-community" color ="#61892F" size = {40} /> */}
             <ListItem.Content >
-              <ListItem.Title style = {{color:"#86C232",fontFamily: "sans-serif-medium"}}>{el.name}</ListItem.Title>
+              <ListItem.Title style = {{color:"#86C232",fontFamily: "sans-serif-medium"}} onPress ={()=> HandleFavourite(el)} >{el.name}</ListItem.Title>
               <ListItem.Subtitle style = {{color:"#6B6E70",fontFamily: "sans-serif-medium"}}>{el.adress}</ListItem.Subtitle>
               
             </ListItem.Content>
-            <ListItem.Chevron color = "#61892F" size = {30}  onPress = {() => HandleCreateDetail(false,el)}  />
+            <ListItem.Chevron color = "#61892F" size = {50}   onPress = {() => HandleCreateDetail(false,el)}  />
           </ListItem.Swipeable>
                   </React.Fragment>
                 )) 
               }
-        </ScrollView>
+        {/* </ScrollView> */}
             </View>
     );
 }

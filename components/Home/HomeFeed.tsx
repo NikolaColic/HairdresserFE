@@ -19,6 +19,7 @@ interface Props  {
     isHome : boolean;
     hairdresser : Hairdresser | undefined;
     setHairdresser : (hairdresser : Hairdresser | undefined) => void;
+    setHairdresserReservation : (hairdresserReservation : Hairdresser | undefined) => void;
 }
 
 const HomeFeed = (props : Props) => {
@@ -56,7 +57,7 @@ const HomeFeed = (props : Props) => {
             <View style={{ flex: 1, backgroundColor: "#222629", flexDirection: "column" }} >
                 { props.isHome && props.user !== null ? (<HomeFeedChip active = {active} HandleActive ={HandleActive}/>) :(<Text></Text>) }
                 <HomeFeedSearch text = {text} HandleSearch ={HandleSearch}/>
-                <HomeFeedList hairdresser = {props.hairdresser} setHairdresser ={props.setHairdresser} hairdressers ={hairdressers} user ={props.user} AddFavouriteApi ={props.AddFavouriteApi} DeleteFavouriteApi ={props.DeleteFavouriteApi} />
+                <HomeFeedList setHairdresserReservation ={props.setHairdresserReservation} hairdresser = {props.hairdresser} setHairdresser ={props.setHairdresser} hairdressers ={hairdressers} user ={props.user} AddFavouriteApi ={props.AddFavouriteApi} DeleteFavouriteApi ={props.DeleteFavouriteApi} />
             </View>
         </React.Fragment>
     )
@@ -79,19 +80,8 @@ const HomeFeedChip = (props : PropsChip) =>{
                 type="outline"
                 buttonStyle = {props.active === 1 ? {backgroundColor:"#61892F"} : {}}
                 titleStyle = {{color:"white",fontFamily: "sans-serif-medium"}}
-                containerStyle = { {width:"90%"}}
+                containerStyle = { {width:"90%", marginLeft:"5%"}}
                 onPress = {()=> props.HandleActive(1)}
-                style = {{backgroundColor:"red"}}
-            />
-            </View>
-            <View style ={{flex: 1}}>
-            <Chip
-                title="Popular"
-                type="outline"
-                buttonStyle = {props.active === 2 ? {backgroundColor:"#61892F"} : {}}
-                titleStyle = {{color:"white",fontFamily: "sans-serif-medium"}}
-                containerStyle = {{width:"90%"}}
-                onPress = {()=> props.HandleActive(2)}
                 style = {{backgroundColor:"red"}}
             />
             </View>

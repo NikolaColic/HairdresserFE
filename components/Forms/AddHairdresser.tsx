@@ -102,12 +102,12 @@ const AddHairdresser = (props : Props) => {
         HandleOpenSnackbar("Empty entry", true);
         return;
       }
-      if(taxId.length != 13){
-        HandleOpenSnackbar("Tax id must have 13 letters", true);
+      if(taxId.length != 12){
+        HandleOpenSnackbar("Tax id must have 12 letters", true);
         return;
       }
-      if(parentId.length != 13){
-        HandleOpenSnackbar("Parent id must have 13 letters", true);
+      if(parentId.length != 12){
+        HandleOpenSnackbar("Parent id must have 12 letters", true);
         return;
       }
     }else if(step == 1){
@@ -116,17 +116,17 @@ const AddHairdresser = (props : Props) => {
         return;
       }
 
-      if(!email.trim().endsWith("@gmail.com") && email.trim().endsWith("@hotmail.com") && email.trim().endsWith("@outlook.com")
-      && email.trim().endsWith("@fon.bg.ac.rs")){
+      if(!email.trim().endsWith("@gmail.com") && !email.trim().endsWith("@hotmail.com") && !email.trim().endsWith("@outlook.com")
+      && !email.trim().endsWith("@fon.bg.ac.rs")){
         HandleOpenSnackbar("You must entry valid email adress",true);
         return;
       }
-      if(facebook !== "" && !facebook.includes("facebook")){
+      if(!facebook.includes("facebook")){
         HandleOpenSnackbar("You must entry valid facebook url",true);
         return;
       }
-      if(instagram !== "" && !instagram.includes("facebook")){
-        HandleOpenSnackbar("You must entry valid facebook url",true);
+      if(!instagram.includes("instagram")){
+        HandleOpenSnackbar("You must entry valid instagram url",true);
         return;
       }
     }else if(step ==2){
@@ -136,6 +136,10 @@ const AddHairdresser = (props : Props) => {
       }
       if(municipality === ""){
         HandleOpenSnackbar("You must entry municipality",true);
+        return;
+      }
+      if(gender === 0){
+        HandleOpenSnackbar("You must choose gender",true);
         return;
       }
     }else{

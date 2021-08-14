@@ -4,8 +4,8 @@ import { Municipality } from "../model/Municipality";
 import { Reservation } from "../model/Reservation";
 import { SocialNetwork } from "../model/SocialNetwork";
 import { User } from "../model/User";
-
-const baseUrl = "http://2a1800b90ca8.ngrok.io/"; 
+ 
+const baseUrl = "http://94d9383d00d2.ngrok.io/"; 
  
 //FavouriteHairdresser
 

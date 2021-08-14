@@ -17,6 +17,9 @@ interface Props {
     hairdresser : Hairdresser | undefined;
     user : User;
     text : string;
+    setHairdresserReservation : (hairdresserReservation : Hairdresser | undefined) => void;
+    AddFavouriteApi : (hairdresser : Hairdresser) => void;
+    DeleteFavouriteApi : (hairdresser : Hairdresser) => void;
 }
 
 const HairdresserOne = (props : Props) => {
@@ -35,8 +38,8 @@ const HairdresserOne = (props : Props) => {
         try {
           const result = await Share.share({
             message:
-              'Posetite frizerski salon' + props.hairdresser?.name + ' koji se nalazi na lokaciji ' + props.hairdresser?.adress +
-              ' u opstini ' + props.hairdresser?.municipality.name,
+              'Posetite frizerski salon ' + props.hairdresser?.name + ' koji se nalazi na lokaciji ' + props.hairdresser?.adress +
+              ' u opstini ' + props.hairdresser?.municipality.name + '. Skinite aplikaciju FonHair i rezervisite mesto u frizerskim salonima \n Vise informacija na fon.bg.ac.rs',
             url: props.hairdresser?.website,
             title : 'Skinite aplikaciju i rezervisite mesto u frizerskim salonima'
           });
@@ -54,6 +57,44 @@ const HairdresserOne = (props : Props) => {
         }
       };
 
+    const HandleCreateRes = ()=>{
+        props.setHairdresserReservation(props.hairdresser); 
+        navigation.navigate('Create reservation')
+    }
+    const HandleFavouriteIcon = (el : Hairdresser) =>{
+        if(props.user !==  null && props.user !== undefined){
+          if(props.user.favouritesHairdresser !==  null && props.user.favouritesHairdresser.length > 0){
+            if(props.user.favouritesHairdresser?.find((e)=> e.hairdresser !== null && e.hairdresser.hairdresserId === el.hairdresserId) !== undefined){
+              return true;
+            }else{
+              return false;
+            }
+          }else{
+            return false;
+          }
+        }else{
+          return false;
+        }
+      }
+    
+      const HandleFavourite = () =>{
+        if(props.hairdresser !== undefined){
+            if(props.user !==  null && props.user !== undefined){
+              if(props.user?.favouritesHairdresser !==  undefined && props.user?.favouritesHairdresser.length > 0){
+                if(props.user.favouritesHairdresser.find((e)=> e.hairdresser.hairdresserId === props.hairdresser?.hairdresserId) !== undefined){
+                  props.DeleteFavouriteApi(props.hairdresser);
+                }else{
+                  props.AddFavouriteApi(props.hairdresser);
+                }
+              }else{
+                props.AddFavouriteApi(props.hairdresser);
+              }
+            }else{
+            }
+
+        }
+      }
+
     return (
         <React.Fragment>
             <HeaderComponent text = {props.text} />
@@ -65,12 +106,21 @@ const HairdresserOne = (props : Props) => {
                                 {props.hairdresser?.name}
                             </Text>
                             <Chip
-                                onPress = {()=> navigation.navigate('Create reservation')}
+                               
+                                onPress = {()=> HandleCreateRes()}
                                 title="Create reservation"
                                 type="outline"
                                 titleStyle = {{color:"white",fontFamily:"sans-serif-medium"}}
                                 containerStyle = {{width:"35%", backgroundColor:"#474B4F", borderRadius:15, marginTop:"2%"}}
                             />
+                            <Chip
+                               
+                               onPress = {()=> HandleFavourite()}
+                               title={props.hairdresser !== undefined && HandleFavouriteIcon(props.hairdresser) ? "Delete favourite" : "Add favourite"}
+                               type="outline"
+                               titleStyle = {{color:"white",fontFamily:"sans-serif-medium"}}
+                               containerStyle = {{width:"35%", backgroundColor:"#61892F", borderRadius:15, marginTop:"2%"}}
+                           />
                         </ImageBackground>
 
                     </View>
@@ -139,9 +189,9 @@ const HairdresserOne = (props : Props) => {
                                 icon = {{name:"share", type:"material-community",color:"white",size:25}}/>
                         </View>
                         <View style ={{flex: 0.3,flexDirection:"row",  alignContent:"space-between",marginLeft:"5%"}}>
-                            <SocialIcon style = {{backgroundColor:"#61892F"}} type='facebook' iconSize = {25} onPress = {()=> Linking.openURL(HandleSocial(true)).catch(err => console.error("Couldn't load page", err))} />
+                            <SocialIcon style = {{backgroundColor:"#61892F"}} type='facebook' iconSize = {25} onPress = {()=> HandleSocial(true) !== "" ? Linking.openURL(HandleSocial(true)).catch(err => console.error("Couldn't load page", err) ) : setVisible(3)} />
                             <SocialIcon style = {{backgroundColor:"#61892F"}} type='google' iconSize = {25} onPress = {()=> Linking.openURL(props.hairdresser !== undefined ? props.hairdresser.website : "").catch(err => console.error("Couldn't load page", err))} />
-                            <SocialIcon style = {{backgroundColor:"#61892F"}} type='instagram' iconSize = {25} onPress = {()=> Linking.openURL(HandleSocial(false)).catch(err => console.error("Couldn't load page", err))} />
+                            <SocialIcon style = {{backgroundColor:"#61892F"}} type='instagram' iconSize = {25} onPress = {()=> HandleSocial(false) !== "" ? Linking.openURL(HandleSocial(false)).catch(err => console.error("Couldn't load page", err) ) : setVisible(4)} />
                         </View>
                         <Snackbar
                             visible = {visible > 0}
@@ -156,7 +206,8 @@ const HairdresserOne = (props : Props) => {
                             }}>
                                 <Text style = {{fontSize:15,color:"white",letterSpacing:1.5, fontFamily:"sans-serif-medium", lineHeight:20}}>
                                   {
-                                      visible === 1 ? props.hairdresser?.description : visible === 2 ? props.hairdresser?.pricelist : ""
+                                      visible === 1 ? props.hairdresser?.description : visible === 2 ? props.hairdresser?.pricelist : visible === 3 
+                                      ? "Facebook account doesn't exist" : visible === 4 ? "Instagram account doesn't exist" : ""
                                   }
                                 </Text>
             </Snackbar>
